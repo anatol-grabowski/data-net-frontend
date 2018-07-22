@@ -35,9 +35,12 @@ body {
   border-radius: 10px;
   padding: 5px 10px;
   background-color:#ffb;
+  transform: translate(-50%, -50%);
+  position: absolute;
 }
 
 .node-text {
   text-anchor: middle;
   pointer-events: none;
+  user-select: none;
 }

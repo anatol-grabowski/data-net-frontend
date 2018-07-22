@@ -39,20 +39,21 @@ export default class Node extends React.Component {
     const data = this.props.node.data
     return (
       <div
-        xmlns="http://www.w3.org/1999/xhtml"
         className="node"
         style={{
-          transform: 'translate(-50%,-50%)',
-          position: 'absolute',
           top: data.y + 'px',
-          left: data.x + 'px'
+          left: data.x + 'px',
         }}
         onContextMenu={e => e.preventDefault()}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
         onDoubleClick={this.handleDoubleClick}
       >
-        {data.text}
+        <div
+          className='node-text'
+        >
+          {data.text}
+        </div>
       </div>
     )
   }
