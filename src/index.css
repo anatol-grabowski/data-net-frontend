@@ -21,15 +21,13 @@ body {
 }
 
 .nodeElement {
-  position: absolute;
-  border: 3px solid black;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
+  rx: 10px;
+  stroke-width: 2px;
+  stroke: black;
+  fill: #ffb;
 }
 
-.nodeElement input {
-  max-width: 100%;
+.node-text {
+  text-anchor: middle;
+  pointer-events: none;
 }

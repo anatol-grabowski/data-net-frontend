@@ -38,23 +38,23 @@ export default class Node extends React.Component {
   render() {
     const data = this.props.node.data
     return (
-      <g>
+      <g
+        transform={`translate(${data.x - data.width / 2},${data.y - data.height / 2})`}
+      >
         <rect
-          className="nodeElement"
-          x={data.x - data.width / 2}
-          y={data.y - data.height / 2}
+          className='nodeElement'
           height={data.height}
           width={data.width}
-          fill="#ffb"
-          stroke="black"
-          strokeWidth="2px"
-          rx={10}
           onContextMenu={e => e.preventDefault()}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onDoubleClick={this.handleDoubleClick}
         />
-        <text x={data.x} y={data.y}>
+        <text
+          className='node-text'
+          x={data.width/2}
+          y={data.height/2}
+        >
           {data.text}
         </text>
       </g>

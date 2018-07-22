@@ -16,7 +16,7 @@ LMB on empty space and drag - pan
 
 Ctrl + S - save graph
 
-To open a graph enter its name to location bar after '/', e.g. 'http://localhost:3000/js' - will open a graph named 'js'.
+To open a graph enter its name to the location bar after '/', e.g. 'http://localhost:3000/js' will open a graph named 'js'.
 If the graph with this name doesn't exist then it will be created on save.
 `
 
@@ -84,7 +84,7 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({backgroundText: helpText + '\n\nOpening'})
+    this.setState({backgroundText: helpText + '\n\nOpening graph'})
     GraphApi.getGraph()
       .then(graph => {
         window.g = graph
