@@ -10,8 +10,11 @@ const getGraphName = () => window.location.pathname.substr(1) || '/'
 
 export default class GraphApi {
   static async getGraph() {
-    if (standalone) return makeDummyGraph()
     const graphName = getGraphName()
+    if (standalone) {
+      if (graphName !== 'test') return makeDummyGraph()
+      return genGraph(500)
+    }
     console.log('opening', graphName)
     const url = `${apiUrl}/graph/${encodeURIComponent(graphName)}`
     const response = await fetch(url)
@@ -55,5 +58,19 @@ function makeDummyGraph() {
     text: '123',
   })
   graph.edge(n1, n2)
+  return graph
+}
+
+function genGraph(num) {
+  const graph = Graph.create()
+  for (let i = 0; i < num; i++) {
+    graph.node({
+      x: Math.random() * 1000,
+      y: Math.random() * 1000,
+      width: 160,
+      height: 70,
+      text: 'test',
+    })
+  }
   return graph
 }
