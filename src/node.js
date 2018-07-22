@@ -38,26 +38,22 @@ export default class Node extends React.Component {
   render() {
     const data = this.props.node.data
     return (
-      <g
-        transform={`translate(${data.x - data.width / 2},${data.y - data.height / 2})`}
+      <div
+        xmlns="http://www.w3.org/1999/xhtml"
+        className="node"
+        style={{
+          transform: 'translate(-50%,-50%)',
+          position: 'absolute',
+          top: data.y + 'px',
+          left: data.x + 'px'
+        }}
+        onContextMenu={e => e.preventDefault()}
+        onMouseDown={this.handleMouseDown}
+        onMouseUp={this.handleMouseUp}
+        onDoubleClick={this.handleDoubleClick}
       >
-        <rect
-          className='nodeElement'
-          height={data.height}
-          width={data.width}
-          onContextMenu={e => e.preventDefault()}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onDoubleClick={this.handleDoubleClick}
-        />
-        <text
-          className='node-text'
-          x={data.width/2}
-          y={data.height/2}
-        >
-          {data.text}
-        </text>
-      </g>
+        {data.text}
+      </div>
     )
   }
 }

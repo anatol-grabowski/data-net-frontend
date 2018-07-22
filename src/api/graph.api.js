@@ -41,8 +41,8 @@ export default class GraphApi {
 function makeDummyGraph() {
   const graph = Graph.create()
   const n1 = graph.node({
-    x: 200,
-    y: 200,
+    x: 0,
+    y: 0,
     width: 200,
     height: 80,
     text: 'abc',

@@ -261,14 +261,15 @@ class App extends React.Component {
               this.state.graph.edges &&
               this.state.graph.nodes.map(node => {
                 return (
-                  <Node
+                  <rect
                     key={node.id}
-                    node={node}
-                    onStartConnection={this.handleStartConnection}
-                    onFinishConnection={this.handleFinishConnection}
-                    onChangeNodeData={this.handleChangeNodeData}
-                    onStartDrag={this.handleStartDrag}
-                    onStartEdit={this.handleStartEditNode}
+                    x={node.data.x}
+                    y={node.data.y}
+                    width='50'
+                    height='50'
+                    fill='none'
+                    stroke='black'
+                    strokeWidth='1px'
                   />
                 )
               })
@@ -289,6 +290,35 @@ class App extends React.Component {
             }
           </g>
         </svg>
+        <div
+          style={
+            {
+              transform: `translate(${this.state.translate.x}px,${this.state.translate.y}px) scale(${this.state.scale})`,
+              position: 'absolute',
+              top: 0,
+              left: 0
+            }
+          }
+          onMouseUp={this.handleMouseUp}
+        >
+          {
+            this.state.graph &&
+            this.state.graph.edges &&
+            this.state.graph.nodes.map(node => {
+              return (
+                <Node
+                  key={node.id}
+                  node={node}
+                  onStartConnection={this.handleStartConnection}
+                  onFinishConnection={this.handleFinishConnection}
+                  onChangeNodeData={this.handleChangeNodeData}
+                  onStartDrag={this.handleStartDrag}
+                  onStartEdit={this.handleStartEditNode}
+                />
+              )
+            })
+          }
+        </div>
         {
           editBox
         }
