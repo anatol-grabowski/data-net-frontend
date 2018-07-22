@@ -55,7 +55,8 @@ export default class Node extends React.Component {
                 fontSize: '1.5rem',
                 border: '2px solid black',
                 display: 'inline-block',
-                // transform: 'translate(-50%, -50%)'
+                transform: 'translate(-50%, -50%)',
+                position: 'fixed'
               }
             }
           >
