@@ -256,7 +256,7 @@ class App extends React.Component {
                 return <Edge key={edge.id} edge={edge} />
               })
             }
-            {
+            {/* {
               this.state.graph &&
               this.state.graph.edges &&
               this.state.graph.nodes.map(node => {
@@ -273,7 +273,7 @@ class App extends React.Component {
                   />
                 )
               })
-            }
+            } */}
             {
               this.state.connection && (
                 <line
