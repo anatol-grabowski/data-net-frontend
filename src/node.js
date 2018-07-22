@@ -38,25 +38,43 @@ export default class Node extends React.Component {
   render() {
     const data = this.props.node.data
     return (
-      <g>
-        <rect
+      <g
+        onContextMenu={e => e.preventDefault()}
+        onMouseDown={this.handleMouseDown}
+        onMouseUp={this.handleMouseUp}
+        onDoubleClick={this.handleDoubleClick}
+        transform={`translate(${data.x},${data.y})`}
+        height={data.height}
+        width={data.width}
+      >
+        <foreignObject x="0" y="0" height="500" width="500">
+          <div xmlns="http://www.w3.org/1999/xhtml"
+            style={
+              {
+                whiteSpace: 'pre',
+                fontSize: '1.5rem',
+                border: '2px solid black',
+                display: 'inline-block',
+                // transform: 'translate(-50%, -50%)'
+              }
+            }
+          >
+            {data.text}
+          </div>
+        </foreignObject>
+        {/* <rect
           className="nodeElement"
-          x={data.x - data.width / 2}
-          y={data.y - data.height / 2}
-          height={data.height}
-          width={data.width}
           fill="#ffb"
           stroke="black"
           strokeWidth="2px"
           rx={10}
-          onContextMenu={e => e.preventDefault()}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onDoubleClick={this.handleDoubleClick}
-        />
-        <text x={data.x} y={data.y}>
+          height={data.height}
+          width={data.width}
+          transform='translate(-50%,-50%)'
+        /> */}
+        {/* <text x={data.x} y={data.y}>
           {data.text}
-        </text>
+        </text> */}
       </g>
     )
   }
