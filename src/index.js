@@ -229,18 +229,18 @@ class App extends React.Component {
       />
     }
     return (
-      <div className="container">
-        <svg
-          ref={this.containerRef}
-          className="graph"
-          onDoubleClick={this.handleDoubleClick}
-          onMouseMove={this.handleMouseMove}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onWheel={this.handleWheel}
-          onKeyDown={this.handleKeyDown}
-          tabIndex="0"
-        >
+      <div
+        className="container"
+        ref={this.containerRef}
+        onDoubleClick={this.handleDoubleClick}
+        onMouseMove={this.handleMouseMove}
+        onMouseDown={this.handleMouseDown}
+        onMouseUp={this.handleMouseUp}
+        onWheel={this.handleWheel}
+        onKeyDown={this.handleKeyDown}
+        tabIndex="0"
+      >
+        <svg className="graph">
           <g
             transform={`translate(${this.state.translate.x},${this.state.translate.y}) scale(${this.state.scale})`}
           >
@@ -299,7 +299,6 @@ class App extends React.Component {
               left: 0
             }
           }
-          onMouseUp={this.handleMouseUp}
         >
           {
             this.state.graph &&

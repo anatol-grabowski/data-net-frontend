@@ -12,8 +12,8 @@ export default class GraphApi {
   static async getGraph() {
     const graphName = getGraphName()
     if (standalone) {
-      if (graphName !== 'test') return makeDummyGraph()
-      return genGraph(500)
+      if (graphName.substr(0, 4) !== 'test') return makeDummyGraph()
+      return genGraph(Number(graphName.substr(4) || 500))
     }
     console.log('opening', graphName)
     const url = `${apiUrl}/graph/${encodeURIComponent(graphName)}`
