@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import GraphApi from './api/graph.api'
-import Node from './node'
-import Edge from './edge'
+import Node from './components/node'
+import Edge from './components/edge'
 
 const helpText = `
 LMB double click - create node
@@ -230,7 +230,7 @@ class App extends React.Component {
     }
     return (
       <div
-        className="container"
+        className="graph"
         ref={this.containerRef}
         onDoubleClick={this.handleDoubleClick}
         onMouseMove={this.handleMouseMove}
@@ -240,7 +240,7 @@ class App extends React.Component {
         onKeyDown={this.handleKeyDown}
         tabIndex="0"
       >
-        <svg className="graph">
+        <svg className="edges">
           <g
             transform={`translate(${this.state.translate.x},${this.state.translate.y}) scale(${this.state.scale})`}
           >
@@ -291,12 +291,10 @@ class App extends React.Component {
           </g>
         </svg>
         <div
+          className='nodes'
           style={
             {
               transform: `translate(${this.state.translate.x}px,${this.state.translate.y}px) scale(${this.state.scale})`,
-              position: 'absolute',
-              top: 0,
-              left: 0
             }
           }
         >

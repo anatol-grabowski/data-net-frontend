@@ -9,22 +9,32 @@ body {
   height: 100vh;
 }
 
-.container {
+.graph {
   width: 100%;
   height: 100%;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  overflow: hidden; /* should be hidden after testing */
 }
 
-.graph {
+.edges {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.nodeElement {
-  rx: 10px;
-  stroke-width: 2px;
-  stroke: black;
-  fill: #ffb;
+.nodes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* width: 100%;
+  height: 100%; */
 }
 
 .node {
@@ -43,4 +53,10 @@ body {
   text-anchor: middle;
   pointer-events: none;
   user-select: none;
+}
+
+.edge-line {
+  fill: #ffb;
+  stroke: black;
+  stroke-width: 2px;
 }
