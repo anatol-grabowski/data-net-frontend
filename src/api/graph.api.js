@@ -63,14 +63,18 @@ function makeDummyGraph() {
 
 function genGraph(num) {
   const graph = Graph.create()
+  const n0 = graph.node({
+    x: -100, y: -100, width: 100, height: 100, text: '0000'
+  })
   for (let i = 0; i < num; i++) {
-    graph.node({
+    const n = graph.node({
       x: Math.random() * 1000,
       y: Math.random() * 1000,
       width: 160,
       height: 70,
       text: 'test',
     })
+    graph.edge(n0, n)
   }
   return graph
 }
