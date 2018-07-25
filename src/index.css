@@ -17,7 +17,7 @@ body {
   left: 10%;
   width: 80%;
   height: 80%;
-  overflow: hidden; /* should be hidden after testing */
+  overflow: visible; /* should be hidden after testing */
 }
 
 .edges {
@@ -27,6 +27,7 @@ body {
   width: 100%;
   height: 100%;
   display: block;
+  pointer-events: none;
 }
 
 .nodes {
@@ -59,4 +60,8 @@ body {
   fill: #ffb;
   stroke: black;
   stroke-width: 2px;
+}
+
+.edge-line:hover {
+  stroke-width: 4px;
 }

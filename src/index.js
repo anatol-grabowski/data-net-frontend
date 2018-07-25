@@ -23,7 +23,7 @@ If the graph with this name doesn't exist then it will be created on save.
 class App extends React.Component {
   constructor(props) {
     super(props)
-    this.containerRef = React.createRef()
+    this.graphRef = React.createRef()
     this.state = {
       translate: {x: 0, y: 0},
       scale: 0.8,
@@ -33,7 +33,7 @@ class App extends React.Component {
 
   handleDoubleClick = event => {
     event.persist()
-    if (event.target !== this.containerRef.current) return
+    if (event.target !== this.graphRef.current) return
     const pos = this.mapScreenToWorld({x: event.clientX, y: event.clientY})
     const nodeData = {
       ...pos,
@@ -231,7 +231,7 @@ class App extends React.Component {
     return (
       <div
         className="graph"
-        ref={this.containerRef}
+        ref={this.graphRef}
         onDoubleClick={this.handleDoubleClick}
         onMouseMove={this.handleMouseMove}
         onMouseDown={this.handleMouseDown}
@@ -256,28 +256,9 @@ class App extends React.Component {
                 return <Edge key={edge.id} edge={edge} />
               })
             }
-            {/* {
-              this.state.graph &&
-              this.state.graph.edges &&
-              this.state.graph.nodes.map(node => {
-                return (
-                  <rect
-                    key={node.id}
-                    x={node.data.x}
-                    y={node.data.y}
-                    width='50'
-                    height='50'
-                    fill='none'
-                    stroke='black'
-                    strokeWidth='1px'
-                  />
-                )
-              })
-            } */}
             {
               this.state.connection && (
                 <line
-                  className="edgeElement"
                   x1={this.state.connection.from.data.x}
                   y1={this.state.connection.from.data.y}
                   x2={this.state.connection.x + 20}
