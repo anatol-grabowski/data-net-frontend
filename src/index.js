@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import GraphApi from './api/graph.api'
-import Graph from './components/graph'
+import DisplayGraph from './components/display-graph-container'
 
 const helpText = `
 LMB double click - create node
@@ -47,16 +47,24 @@ class App extends React.Component {
 
   render() {
     return (
-      <div
-        className='graph-container'
-      >
-        {
-          this.state.graph && (
-            <Graph
-              graph={this.state.graph}
-            />
-          )
-        }
+      <div>
+        <div>
+          abdfslj
+        </div>
+        <span>
+          slfjsldj
+        </span>
+        <div
+          className='graph-container'
+        >
+          {
+            this.state.graph && (
+              <DisplayGraph
+                graph={this.state.graph}
+              />
+            )
+          }
+        </div>
       </div>
     )
   }

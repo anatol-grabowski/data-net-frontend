@@ -44,10 +44,10 @@ export default class Node extends React.Component {
           top: data.y + 'px',
           left: data.x + 'px',
         }}
-        onContextMenu={e => e.preventDefault()}
-        onMouseDown={this.handleMouseDown}
-        onMouseUp={this.handleMouseUp}
-        onDoubleClick={this.handleDoubleClick}
+        // onContextMenu={e => e.preventDefault()}
+        // onMouseDown={this.handleMouseDown}
+        // onMouseUp={this.handleMouseUp}
+        // onDoubleClick={this.handleDoubleClick}
       >
         <div
           className='node-text'
