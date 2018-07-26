@@ -1,0 +1,44 @@
+.graph {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.edges, .nodes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.node {
+  display: inline-block;
+  white-space: pre;
+  font-size: 1.5rem;
+  border: solid black 2px;
+  border-radius: 10px;
+  padding: 5px 10px;
+  background-color:#ffb;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+.node-text {
+  text-anchor: middle;
+  user-select: none;
+}
+
+.edge {
+  fill: #ffb;
+  stroke: black;
+  stroke-width: 2px;
+}
+
+.edge-line:hover {
+  stroke-width: 4px;
+}
