@@ -16,7 +16,7 @@ body {
   border: 1px solid blue;
 }
 
-.graph-pan-n-zoom-container {
+.pan-and-zoom-interact-container {
   position: relative;
   left: 0;
   top: 0;
@@ -25,7 +25,7 @@ body {
   overflow: hidden;
 }
 
-.graph-transform-container {
+.pan-and-zoom-transform-container {
   position: absolute;
   top: 0;
   left: 0;

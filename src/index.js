@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import GraphApi from './api/graph.api'
-import DisplayGraph from './components/display-graph-container'
+import Graph from './components/graph'
 
 const helpText = `
 LMB double click - create node
@@ -54,16 +54,8 @@ class App extends React.Component {
         <span>
           slfjsldj
         </span>
-        <div
-          className='graph-container'
-        >
-          {
-            this.state.graph && (
-              <DisplayGraph
-                graph={this.state.graph}
-              />
-            )
-          }
+        <div className='graph-container'>
+          {this.state.graph && <Graph graph={this.state.graph}/>}
         </div>
       </div>
     )

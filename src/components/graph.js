@@ -1,49 +1,9 @@
-import React from 'react'
-import Node from './node'
-import Edge from './edge'
-import './graph.css'
+import graph from '../views/graph/graph'
+import Node from '../views/node/node'
+import Edge from '../views/edge/edge'
+import withPanAndZoom from '../hocs/with-pan-and-zoom'
 
-export default class Graph extends React.Component {
-  constructor(props) {
-    super(props)
-    this.graphRef = React.createRef()
-  }
+const Graph = graph(Node, Edge)
+const GraphWithPanAndZoom = withPanAndZoom(Graph)
 
-  componentDidUpdate() {
-    console.log('update')
-  }
-
-  render() {
-    const graph = this.props.graph
-    return (
-      <div className="graph">
-        <svg className="edges">
-          <g>
-            {
-              graph.edges.map(edge => {
-                return (
-                  <Edge
-                    key={edge.id}
-                    edge={edge}
-                  />
-                )
-              })
-            }
-          </g>
-        </svg>
-        <div className='nodes'>
-          {
-            graph.nodes.map(node => {
-              return (
-                <Node
-                  key={node.id}
-                  node={node}
-                />
-              )
-            })
-          }
-        </div>
-      </div>
-    )
-  }
-}
+export default GraphWithPanAndZoom
