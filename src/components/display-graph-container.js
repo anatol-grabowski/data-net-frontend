@@ -33,7 +33,7 @@ export default class DisplayGraph extends React.Component {
     if (evt.button !== 0) return
     this.setState({
       translating: {
-        initialCursor: [evt.pageX, evt.pageY],
+        initialCursor: [evt.clientX, evt.clientY],
         initialWorld: this.state.translate,
       }
     })
@@ -43,11 +43,9 @@ export default class DisplayGraph extends React.Component {
     event.persist()
     event.preventDefault()
     if (this.state.translating) {
-      const x = this.state.translating.initialWorld[0] + event.pageX - this.state.translating.initialCursor[0]
-      const y = this.state.translating.initialWorld[1] + event.pageY - this.state.translating.initialCursor[1]
-      this.setState({
-        translate: [x, y]
-      })
+      const x = this.state.translating.initialWorld[0] + event.clientX - this.state.translating.initialCursor[0]
+      const y = this.state.translating.initialWorld[1] + event.clientY - this.state.translating.initialCursor[1]
+      this.setState({translate: [x, y]})
     }
   }
 
@@ -56,20 +54,20 @@ export default class DisplayGraph extends React.Component {
   }
 
   handleWheel = evt => {
-    const zoomSensitivity = 0.002
-    const newScale = this.state.scale * (1 - zoomSensitivity * evt.deltaY)
-    const pos = [
+    const scaleSensitivity = 0.002
+    const newScale = this.state.scale * (1 - scaleSensitivity * evt.deltaY)
+    const p = [
       evt.pageX - this.graphRef.current.offsetLeft,
       evt.pageY - this.graphRef.current.offsetTop,
     ]
-    const posW = this.mapScreenToWorld(pos)
-    const pAfterZoom = this.mapWorldToScreen(posW, newScale)
+    const pWorld = this.mapScreenToWorld(p)
+    const pAfterScale = this.mapWorldToScreen(pWorld, newScale)
 
     this.setState({
       scale: newScale,
       translate: [
-        this.state.translate[0] + (pos[0] - pAfterZoom[0]),
-        this.state.translate[1] + (pos[1] - pAfterZoom[1]),
+        this.state.translate[0] + (p[0] - pAfterScale[0]),
+        this.state.translate[1] + (p[1] - pAfterScale[1]),
       ],
     })
   }
