@@ -24,15 +24,26 @@ Graph = withPanAndZoom(Graph)
 Graph = withDraggables(Graph, 'onNodeMouseDown')
 
 export default class GraphComponent extends React.Component {
-  handleDrag = event => {
-    console.log('handl', [event.deltaX, event.deltaY], event.payload.id)
+  constructor(props) {
+    super(props)
+    this.state = {
+      scale: 0.5,
+    }
+  }
 
+  handleDrag = event => {
+    const delta = this.state.transformFns.scaleScreenToWorld([event.deltaX, event.deltaY])
+    const node = event.payload
+    node.data.x += delta[0]
+    node.data.y += delta[1]
+    this.setState()
   }
 
   render() {
     return <Graph
       {...this.props}
-      scale={0.5}
+      scale={this.state.scale}
+      onTransform={transformFns => this.setState({transformFns})}
       onDrag={this.handleDrag}
     />
   }

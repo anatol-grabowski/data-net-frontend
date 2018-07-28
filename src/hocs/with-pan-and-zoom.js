@@ -12,6 +12,10 @@ export default function withPanAndZoom(Child) {
       }
     }
 
+    componentDidMount() {
+      this.onTransform()
+    }
+
     scaleScreenToWorld = ([x, y], scale = this.state.scale) => {
       x = x / scale
       y = y / scale
@@ -68,6 +72,14 @@ export default function withPanAndZoom(Child) {
         scale: newScale,
         translate: translateToKeepPointUnderCursorStatic,
       })
+      this.onTransform()
+    }
+
+    onTransform = () => {
+      const transformEvent = {
+        scaleScreenToWorld: this.scaleScreenToWorld
+      }
+      this.props.onTransform && this.props.onTransform(transformEvent)
     }
 
     render() {
