@@ -21,6 +21,7 @@ export default class GraphComponent extends React.Component {
     this.state = {
       initialScale: 0.5,
     }
+    this.componentRef = React.createRef()
   }
 
   handleGetTransformFunctions = transformFunctions => {
@@ -50,13 +51,14 @@ export default class GraphComponent extends React.Component {
   handleNodeMouseDown = (node, event) => {
     if (event.button !== 2) return
     event.stopPropagation()
+    const rect = this.componentRef.current.getBoundingClientRect()
     this.setState({
       connecting: {
         from: node,
-        startX: event.clientX,
-        startY: event.clientY,
-        endX: event.clientX,
-        endY: event.clientY,
+        startX: event.clientX - rect.left,
+        startY: event.clientY - rect.top,
+        endX: event.clientX - rect.left,
+        endY: event.clientY - rect.top,
       }
     })
   }
@@ -67,11 +69,12 @@ export default class GraphComponent extends React.Component {
   }
 
   handleMouseMove = event => {
+    const rect = this.componentRef.current.getBoundingClientRect()
     this.setState({
       connecting: {
         ...this.state.connecting,
-        endX: event.clientX,
-        endY: event.clientY,
+        endX: event.clientX - rect.left,
+        endY: event.clientY - rect.top,
       }
     })
   }
@@ -120,6 +123,7 @@ export default class GraphComponent extends React.Component {
     }
 
     return <div className='graph-component'
+      ref={this.componentRef}
       onDoubleClick={this.handleDoubleClick}
       onMouseDown={this.handleMouseDown}
       onMouseMove={this.state.connecting ? this.handleMouseMove : null}

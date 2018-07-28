@@ -28,9 +28,10 @@ export default function withPanAndZoom(Child) {
     }
 
     mapScreenToWorld = ([pageX, pageY]) => {
+      const rect = this.graphRef.current.getBoundingClientRect()
       const scale = this.state.scale
-      const x = (pageX - this.graphRef.current.offsetLeft - this.state.translate[0]) / scale
-      const y = (pageY - this.graphRef.current.offsetTop - this.state.translate[1]) / scale
+      const x = (pageX - rect.left- this.state.translate[0]) / scale
+      const y = (pageY - rect.top - this.state.translate[1]) / scale
       return [x, y]
     }
 
@@ -63,9 +64,10 @@ export default function withPanAndZoom(Child) {
     handleWheel = evt => {
       const scaleSensitivity = 0.002
       const newScale = this.state.scale * (1 - scaleSensitivity * evt.deltaY)
+      const rect = this.graphRef.current.getBoundingClientRect()
       const p = [
-        evt.pageX - this.graphRef.current.offsetLeft,
-        evt.pageY - this.graphRef.current.offsetTop,
+        evt.pageX - rect.left,
+        evt.pageY - rect.top,
       ]
       const pWorld = this.mapScreenToWorld([evt.pageX, evt.pageY])
       const pAfterScale = this.mapWorldToScreen(pWorld, newScale)
