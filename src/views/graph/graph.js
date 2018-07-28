@@ -10,9 +10,7 @@ export default function graph(Node, Edge) {
     render() {
       const graph = this.props.graph
       return (
-        <div className="graph"
-          onMouseMove={this.props.onMouseMove}
-        >
+        <div className="graph">
           <svg className="edges">
             <g>
               {

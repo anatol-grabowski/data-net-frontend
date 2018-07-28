@@ -40,16 +40,13 @@ export default function withPanAndZoom(Child) {
     }
 
     handleMouseMove = event => {
-      if (!this.state.translating) return
       const x = this.state.translating.initialWorld[0] + event.clientX - this.state.translating.initialCursor[0]
       const y = this.state.translating.initialWorld[1] + event.clientY - this.state.translating.initialCursor[1]
       this.setState({translate: [x, y]})
-      // this.props.onMouseMove && this.props.onMouseMove(event)
     }
 
-    handleMouseUp = event => {
-      if (this.state.translating) this.setState({translating: null})
-      this.props.onMouseUp && this.props.onMouseUp(event)
+    handleMouseUp = () => {
+      this.setState({translating: null})
     }
 
     handleWheel = evt => {
@@ -79,9 +76,15 @@ export default function withPanAndZoom(Child) {
         <div
           className="pan-and-zoom-interact-container"
           ref={this.graphRef}
-          onMouseMove={this.handleMouseMove}
           onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
+          onMouseMove={event => {
+            this.state.translating && this.handleMouseMove(event)
+            this.props.onMouseMove && this.props.onMouseMove(event)
+          }}
+          onMouseUp={event => {
+            this.state.translating && this.handleMouseUp()
+            this.props.onMouseUp && this.props.onMouseUp(event)
+          }}
           onWheel={this.handleWheel}
         >
           <div

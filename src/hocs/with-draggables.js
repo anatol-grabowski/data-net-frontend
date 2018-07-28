@@ -3,7 +3,7 @@
 // onStartDragProp should be called with 1 or 2 arguments
 // the first argument should be the event with clientX and clientY fields
 // the second argument is optional payload, drag target object can be passed here
-// while dragging occurs this.props.onDrag is called with one argument: {deltaX, deltaY, payload}
+// while dragging occurs this.props.onDrag is called with one argument: {deltaX, deltaY, payload, originalEvent}
 
 import React from 'react'
 
@@ -25,13 +25,11 @@ export default function withDraggables(Child, onStartDragPropName='onStartDown')
       })
     }
 
-    handleEndDrag = () => {
-      if (!this.state.dragging) return
+    handleMouseUp = () => {
       this.setState({dragging: null})
     }
 
     handleMouseMove = event => {
-      if (!this.state.dragging) return
       const prev = this.state.dragging.previous
       const curr = [event.clientX, event.clientY]
       const delta = [curr[0] - prev[0], curr[1] - prev[1]]
@@ -45,6 +43,7 @@ export default function withDraggables(Child, onStartDragPropName='onStartDown')
         deltaX: delta[0],
         deltaY: delta[1],
         payload: this.state.dragging.payload,
+        originalEvent: event,
       }
       this.props.onDrag(dragEvent)
     }
@@ -57,8 +56,14 @@ export default function withDraggables(Child, onStartDragPropName='onStartDown')
         <Child
           {...this.props}
           {...dragHandlers}
-          onMouseMove={this.state.dragging ? this.handleMouseMove : null}
-          onMouseUp={this.state.dragging ? this.handleEndDrag : null}
+          onMouseMove={event => {
+            this.state.dragging && this.handleMouseMove(event)
+            this.props.onMouseMove && this.props.onMouseMove(event)
+          }}
+          onMouseUp={event => {
+            this.state.dragging && this.handleMouseUp()
+            this.props.onMouseUp && this.props.onMouseUp(event)
+          }}
         />
       )
     }
