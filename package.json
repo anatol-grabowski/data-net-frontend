@@ -13,7 +13,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "standalone": "REACT_APP_STANDALONE=true react-scripts start # run without relying on backend"
+    "standalone": "REACT_APP_STANDALONE=true react-scripts start # run without relying on backend",
+    "remote": "REACT_APP_API_URL='https://shielded-cove-66557.herokuapp.com' react-scripts start"
   },
   "devDependencies": {
     "eslint": "^5.2.0",
