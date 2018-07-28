@@ -86,16 +86,14 @@ export default function withPanAndZoom(Child) {
       const scale = this.state.scale
       const translate = this.state.translate
       return (
-        <div
-          className='with-pan-and-zoom-interact'
+        <div className='with-pan-and-zoom-interact'
           ref={this.graphRef}
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.state.translating && this.handleMouseMove}
           onMouseUp={this.state.translating && this.handleMouseUp}
           onWheel={this.handleWheel}
         >
-          <div
-            className='with-pan-and-zoom-transform'
+          <div className='with-pan-and-zoom-transform'
             style={{
               transform: `translate(${translate[0]}px,${translate[1]}px) scale(${scale})`,
               transformOrigin: '0px 0px',
