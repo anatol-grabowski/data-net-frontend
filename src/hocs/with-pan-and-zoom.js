@@ -16,8 +16,9 @@ export default function withPanAndZoom(Child) {
       const transformEvent = {
         scaleScreenToWorld: this.scaleScreenToWorld,
         mapScreenToWorld: this.mapScreenToWorld,
+        mapWorldToScreen: this.mapWorldToScreen,
       }
-      this.props.getTransformFunctions && this.props.getTransformFunctions(transformEvent)
+      this.props.onGetTransformFunctions && this.props.onGetTransformFunctions(transformEvent)
     }
 
     scaleScreenToWorld = ([x, y], scale = this.state.scale) => {

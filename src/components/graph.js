@@ -19,11 +19,11 @@ export default class GraphComponent extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      scale: 0.5,
+      initialScale: 0.5,
     }
   }
 
-  setTransformFunctions = transformFunctions => {
+  handleGetTransformFunctions = transformFunctions => {
     this.setState({transformFunctions})
   }
 
@@ -80,20 +80,59 @@ export default class GraphComponent extends React.Component {
     this.setState({connecting: null})
   }
 
+  handleNodeDoubleClick = (node, event) => {
+    event.stopPropagation()
+    this.setState({
+      editing: {node}
+    })
+  }
+
+  handleMouseDown = event => {
+    event.preventDefault()
+    if (!this.state.editing) return
+
+    this.setState({editing: null})
+  }
+
+  handleEditNode = event => {
+    const node = this.state.editing.node
+    node.data.text = event.target.value
+    this.setState({})
+  }
+
   render() {
+    let editBox
+    if (this.state.editing) {
+      const p = [this.state.editing.node.data.x, this.state.editing.node.data.y]
+      const ps = this.state.transformFunctions.mapWorldToScreen(p)
+      editBox = <input
+        type="text"
+        value={this.state.editing.node.data.text}
+        style={{
+          position: 'absolute',
+          left: ps[0],
+          top: ps[1],
+        }}
+        onChange={this.handleEditNode}
+        onMouseDown={evt => evt.stopPropagation()}
+        onKeyDown={evt => evt.keyCode === 13 && this.handleMouseDown(evt)}
+      />
+    }
+
     return <div className='graph-component'
       onDoubleClick={this.handleDoubleClick}
-      onMouseDown={evt => evt.preventDefault()}
+      onMouseDown={this.handleMouseDown}
       onMouseMove={this.state.connecting ? this.handleMouseMove : null}
       onMouseUp={this.state.connecting ? this.handleMouseUp : null}
     >
       <Graph
         {...this.props}
-        scale={this.state.scale}
-        getTransformFunctions={this.setTransformFunctions}
+        scale={this.state.initialScale}
+        onGetTransformFunctions={this.handleGetTransformFunctions}
         onDrag={this.handleDrag}
         onNodeMouseDown={this.handleNodeMouseDown}
         onNodeMouseUp={this.state.connecting && this.handleNodeMouseUp}
+        onNodeDoubleClick={this.handleNodeDoubleClick}
       />
       {
         this.state.connecting && <svg
@@ -118,6 +157,7 @@ export default class GraphComponent extends React.Component {
           />
         </svg>
       }
+      {editBox}
     </div>
   }
 }

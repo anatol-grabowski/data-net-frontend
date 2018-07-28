@@ -12,6 +12,7 @@ export default class Node extends React.Component {
         onMouseDown={this.props.onMouseDown}
         onContextMenu={evt => evt.preventDefault()}
         onMouseUp={this.props.onMouseUp}
+        onDoubleClick={this.props.onDoubleClick}
       >
         <div className='node-text'>
           {data.text}
