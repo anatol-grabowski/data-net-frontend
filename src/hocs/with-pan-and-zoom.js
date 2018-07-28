@@ -13,7 +13,11 @@ export default function withPanAndZoom(Child) {
     }
 
     componentDidMount() {
-      this.onTransform()
+      const transformEvent = {
+        scaleScreenToWorld: this.scaleScreenToWorld,
+        mapScreenToWorld: this.mapScreenToWorld,
+      }
+      this.props.getTransformFunctions && this.props.getTransformFunctions(transformEvent)
     }
 
     scaleScreenToWorld = ([x, y], scale = this.state.scale) => {
@@ -22,9 +26,10 @@ export default function withPanAndZoom(Child) {
       return [x, y]
     }
 
-    mapScreenToWorld = ([x, y], scale = this.state.scale) => {
-      x = (x - this.state.translate[0]) / scale
-      y = (y - this.state.translate[1]) / scale
+    mapScreenToWorld = ([pageX, pageY]) => {
+      const scale = this.state.scale
+      const x = (pageX - this.graphRef.current.offsetLeft - this.state.translate[0]) / scale
+      const y = (pageY - this.graphRef.current.offsetTop - this.state.translate[1]) / scale
       return [x, y]
     }
 
@@ -61,7 +66,7 @@ export default function withPanAndZoom(Child) {
         evt.pageX - this.graphRef.current.offsetLeft,
         evt.pageY - this.graphRef.current.offsetTop,
       ]
-      const pWorld = this.mapScreenToWorld(p)
+      const pWorld = this.mapScreenToWorld([evt.pageX, evt.pageY])
       const pAfterScale = this.mapWorldToScreen(pWorld, newScale)
 
       const translateToKeepPointUnderCursorStatic = [
@@ -72,14 +77,6 @@ export default function withPanAndZoom(Child) {
         scale: newScale,
         translate: translateToKeepPointUnderCursorStatic,
       })
-      this.onTransform()
-    }
-
-    onTransform = () => {
-      const transformEvent = {
-        scaleScreenToWorld: this.scaleScreenToWorld
-      }
-      this.props.onTransform && this.props.onTransform(transformEvent)
     }
 
     render() {

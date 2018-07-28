@@ -23,12 +23,28 @@ export default class GraphComponent extends React.Component {
     }
   }
 
+  setTransformFunctions = transformFunctions => {
+    this.setState({transformFunctions})
+  }
+
   handleDrag = event => {
-    const delta = this.state.transformFns.scaleScreenToWorld([event.deltaX, event.deltaY])
+    const delta = this.state.transformFunctions.scaleScreenToWorld([event.deltaX, event.deltaY])
     const node = event.payload
     node.data.x += delta[0]
     node.data.y += delta[1]
     this.setState()
+  }
+
+  handleDoubleClick = event => {
+    const p = this.state.transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
+    const data = {
+      text: 'aaa',
+      x: p[0],
+      y: p[1],
+    }
+    const graph = this.props.graph
+    graph.node(data)
+    this.setState({graph})
   }
 
   handleNodeMouseDown = (node, event) => {
@@ -66,13 +82,15 @@ export default class GraphComponent extends React.Component {
 
   render() {
     return <div className='graph-component'
+      onDoubleClick={this.handleDoubleClick}
+      onMouseDown={evt => evt.preventDefault()}
       onMouseMove={this.state.connecting ? this.handleMouseMove : null}
       onMouseUp={this.state.connecting ? this.handleMouseUp : null}
     >
       <Graph
         {...this.props}
         scale={this.state.scale}
-        onTransform={transformFns => this.setState({transformFns})}
+        getTransformFunctions={this.setTransformFunctions}
         onDrag={this.handleDrag}
         onNodeMouseDown={this.handleNodeMouseDown}
         onNodeMouseUp={this.state.connecting && this.handleNodeMouseUp}
