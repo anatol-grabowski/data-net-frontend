@@ -28,6 +28,10 @@
   position: absolute;
 }
 
+.node:hover {
+  border-width: 4px;
+}
+
 .node-text {
   text-anchor: middle;
   user-select: none;
@@ -39,6 +43,6 @@
   stroke-width: 2px;
 }
 
-.edge-line:hover {
+.edge:hover {
   stroke-width: 4px;
 }

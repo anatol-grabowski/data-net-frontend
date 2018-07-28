@@ -9,6 +9,7 @@ export default class Node extends React.Component {
           top: data.y + 'px',
           left: data.x + 'px',
         }}
+        onMouseDown={this.props.onMouseDown}
       >
         <div className='node-text'>
           {data.text}

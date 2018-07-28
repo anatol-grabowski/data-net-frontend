@@ -7,7 +7,7 @@ export default function withPanAndZoom(Child) {
       this.graphRef = React.createRef()
       this.state = {
         translate: [0, 0],
-        scale: 0.5
+        scale: props.scale || 1,
       }
     }
 
@@ -39,17 +39,17 @@ export default function withPanAndZoom(Child) {
       })
     }
 
-    handleMouseMove = evt => {
-      evt.preventDefault()
-      if (this.state.translating) {
-        const x = this.state.translating.initialWorld[0] + evt.clientX - this.state.translating.initialCursor[0]
-        const y = this.state.translating.initialWorld[1] + evt.clientY - this.state.translating.initialCursor[1]
-        this.setState({translate: [x, y]})
-      }
+    handleMouseMove = event => {
+      if (!this.state.translating) return
+      const x = this.state.translating.initialWorld[0] + event.clientX - this.state.translating.initialCursor[0]
+      const y = this.state.translating.initialWorld[1] + event.clientY - this.state.translating.initialCursor[1]
+      this.setState({translate: [x, y]})
+      // this.props.onMouseMove && this.props.onMouseMove(event)
     }
 
-    handleMouseUp = () => {
+    handleMouseUp = event => {
       if (this.state.translating) this.setState({translating: null})
+      this.props.onMouseUp && this.props.onMouseUp(event)
     }
 
     handleWheel = evt => {
@@ -62,12 +62,13 @@ export default function withPanAndZoom(Child) {
       const pWorld = this.mapScreenToWorld(p)
       const pAfterScale = this.mapWorldToScreen(pWorld, newScale)
 
+      const translateToKeepPointUnderCursorStatic = [
+        this.state.translate[0] + (p[0] - pAfterScale[0]),
+        this.state.translate[1] + (p[1] - pAfterScale[1]),
+      ]
       this.setState({
         scale: newScale,
-        translate: [
-          this.state.translate[0] + (p[0] - pAfterScale[0]),
-          this.state.translate[1] + (p[1] - pAfterScale[1]),
-        ],
+        translate: translateToKeepPointUnderCursorStatic,
       })
     }
 
