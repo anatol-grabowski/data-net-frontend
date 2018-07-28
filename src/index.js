@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import GraphApi from './api/graph.api'
 import Graph from './components/graph'
+import withPanAndZoom from './hocs/with-pan-and-zoom'
 
 const helpText = `
 LMB double click - create node
@@ -46,11 +47,10 @@ class App extends React.Component {
   }
 
   render() {
+
     return (
       <div>
-        <div>
-          abdfslj
-        </div>
+        <Comp/>
         <span>
           slfjsldj
         </span>
@@ -61,6 +61,11 @@ class App extends React.Component {
     )
   }
 }
+
+const Div = () => (<div>
+  abdfslj
+</div>)
+const Comp = withPanAndZoom(Div)
 
 // ========================================
 
