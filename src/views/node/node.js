@@ -10,6 +10,7 @@ export default class Node extends React.Component {
           left: data.x + 'px',
         }}
         onMouseDown={this.props.onMouseDown}
+        onContextMenu={evt => evt.preventDefault()}
       >
         <div className='node-text'>
           {data.text}

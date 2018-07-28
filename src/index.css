@@ -15,8 +15,3 @@ body {
   display: inline-block;
   border: 1px solid blue;
 }
-
-.with-draggables {
-  width: 100%;
-  height: 100%;
-}

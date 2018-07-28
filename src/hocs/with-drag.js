@@ -1,14 +1,17 @@
 // Usage:
-// Target component should accept a prop with the name set through onStartDragPropName argument
-// onStartDragProp should be called with 1 or 2 arguments
-// the first argument should be the event with clientX and clientY fields
-// the second argument is optional payload, drag target object can be passed here
-// while dragging occurs this.props.onDrag is called with one argument: {deltaX, deltaY, payload, originalEvent}
+// Target component should accept a prop with the name set through onStartDragPropName argument (defaults to 'onMouseDown')
+// The third argument is a function that extracts x, y and optional payload from the onStartDrag event arguments
+// While dragging occurs this.props.onDrag is called with one argument: {deltaX, deltaY, payload, mouseMoveEvent}
 
 import React from 'react'
+import './with-drag.css'
 
-export default function withDraggables(Child, onStartDragPropName='onStartDown') {
-  return class WithDraggables extends React.Component {
+export default function withDrag(
+  Child,
+  onStartDragPropName='onMouseDown',
+  convertStartDragEvent = evt => {return {x: evt.clientX, y: evt.clientY, payload: undefined}}
+) {
+  return class WithDrag extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
@@ -16,13 +19,17 @@ export default function withDraggables(Child, onStartDragPropName='onStartDown')
       }
     }
 
-    handleStartDrag = (event, payload) => {
-      this.setState({
-        dragging: {
-          payload,
-          previous: [event.clientX, event.clientY],
-        },
-      })
+    handleStartDrag = (...args) => {
+      const event = convertStartDragEvent(...args)
+      if (event) {
+        this.setState({
+          dragging: {
+            payload: event.payload,
+            previous: [event.x, event.y],
+          },
+        })
+      }
+      this.props[onStartDragPropName] && this.props[onStartDragPropName](...args)
     }
 
     handleMouseUp = () => {
@@ -43,7 +50,7 @@ export default function withDraggables(Child, onStartDragPropName='onStartDown')
         deltaX: delta[0],
         deltaY: delta[1],
         payload: this.state.dragging.payload,
-        originalEvent: event,
+        mouseMoveEvent: event,
       }
       this.props.onDrag(dragEvent)
     }
@@ -53,7 +60,7 @@ export default function withDraggables(Child, onStartDragPropName='onStartDown')
         [onStartDragPropName]: this.handleStartDrag,
       }
       return (
-        <div className='with-draggables'
+        <div className='with-drag'
           onMouseMove={this.state.dragging && this.handleMouseMove}
           onMouseUp={this.state.dragging && this.handleMouseUp}
         >

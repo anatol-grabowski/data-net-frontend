@@ -3,25 +3,15 @@ import graph from '../views/graph/graph'
 import Node from '../views/node/node'
 import Edge from '../views/edge/edge'
 import withPanAndZoom from '../hocs/with-pan-and-zoom'
-import withDraggables from '../hocs/with-draggables'
+import withDrag from '../hocs/with-drag'
 
-class NodeWithDrag extends React.Component {
-  handleMouseDown = event => {
-    event.stopPropagation()
-    this.props.onMouseDown(event)
-  }
-
-  render() {
-    return <Node
-      {...this.props}
-      onMouseDown={this.handleMouseDown}
-    />
-  }
-}
-
-let Graph = graph(NodeWithDrag, Edge)
+let Graph = graph(Node, Edge)
 Graph = withPanAndZoom(Graph)
-Graph = withDraggables(Graph, 'onNodeMouseDown')
+Graph = withDrag(
+  Graph,
+  'onNodeMouseDown',
+  (node, evt) => {return {x: evt.clientX, y: evt.clientY, payload: node}}
+)
 
 export default class GraphComponent extends React.Component {
   constructor(props) {
@@ -39,12 +29,18 @@ export default class GraphComponent extends React.Component {
     this.setState()
   }
 
+  handleNodeMouseDown = (node, event) => {
+    event.stopPropagation()
+    console.log(event.button, node.id)
+  }
+
   render() {
     return <Graph
       {...this.props}
       scale={this.state.scale}
       onTransform={transformFns => this.setState({transformFns})}
       onDrag={this.handleDrag}
+      onNodeMouseDown={this.handleNodeMouseDown}
     />
   }
 }
