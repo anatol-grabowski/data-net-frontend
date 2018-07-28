@@ -48,7 +48,7 @@ function makeDummyGraph() {
     y: 0,
     width: 200,
     height: 80,
-    text: 'abc',
+    text: 'abcdef',
   })
   const n2 = graph.node({
     x: 500,
@@ -58,6 +58,13 @@ function makeDummyGraph() {
     text: '123',
   })
   graph.edge(n1, n2)
+  graph.node({
+    x: 500,
+    y: 200,
+    width: 200,
+    height: 80,
+    text: 'unconnected',
+  })
   return graph
 }
 

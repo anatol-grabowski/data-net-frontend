@@ -32,7 +32,8 @@ export default function graph(Node, Edge) {
                   <Node
                     key={node.id}
                     node={node}
-                    onMouseDown={evt => this.props.onNodeMouseDown(node, evt)}
+                    onMouseDown={this.props.onNodeMouseDown && (evt => this.props.onNodeMouseDown(node, evt))}
+                    onMouseUp={this.props.onNodeMouseUp && (evt => this.props.onNodeMouseUp(node, evt))}
                   />
                 )
               })
