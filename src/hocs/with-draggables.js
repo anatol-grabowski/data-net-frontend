@@ -1,5 +1,5 @@
 // Usage:
-// Target component should accept 'onMouseMove', 'onMouseUp' and onStartDragPropName props
+// Target component should accept a prop with the name set through onStartDragPropName argument
 // onStartDragProp should be called with 1 or 2 arguments
 // the first argument should be the event with clientX and clientY fields
 // the second argument is optional payload, drag target object can be passed here
@@ -53,18 +53,15 @@ export default function withDraggables(Child, onStartDragPropName='onStartDown')
         [onStartDragPropName]: this.handleStartDrag,
       }
       return (
-        <Child
-          {...this.props}
-          {...dragHandlers}
-          onMouseMove={event => {
-            this.state.dragging && this.handleMouseMove(event)
-            this.props.onMouseMove && this.props.onMouseMove(event)
-          }}
-          onMouseUp={event => {
-            this.state.dragging && this.handleMouseUp()
-            this.props.onMouseUp && this.props.onMouseUp(event)
-          }}
-        />
+        <div className='with-draggables'
+          onMouseMove={this.state.dragging && this.handleMouseMove}
+          onMouseUp={this.state.dragging && this.handleMouseUp}
+        >
+          <Child
+            {...this.props}
+            {...dragHandlers}
+          />
+        </div>
       )
     }
   }

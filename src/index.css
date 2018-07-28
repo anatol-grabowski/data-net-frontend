@@ -16,23 +16,7 @@ body {
   border: 1px solid blue;
 }
 
-.pan-and-zoom-interact-container {
-  position: relative;
-  left: 0;
-  top: 0;
+.with-draggables {
   width: 100%;
   height: 100%;
-  overflow: hidden;
-}
-
-.pan-and-zoom-transform-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.graph-container .graph {
-  overflow: visible;
 }
