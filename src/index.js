@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import GraphApi from './api/graph.api'
-import Graph from './components/graph'
+import Graph from './components/graph-render-and-edit-area'
 import withPanAndZoom from './hocs/with-pan-and-zoom'
 
 const helpText = `
@@ -63,7 +63,8 @@ class App extends React.Component {
 }
 
 const Div = () => (<div>
-  abdfslj
+  some text to add offsets and see<br/>
+  if render area still calculates positions correctly
 </div>)
 const Comp = withPanAndZoom(Div)
 

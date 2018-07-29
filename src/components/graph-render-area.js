@@ -15,7 +15,7 @@ let Graph = graph(Node, Edge)
 Graph = withPanAndZoom(Graph)
 Graph = withDrag(Graph, 'onNodeMouseDown', convertNodeMouseDownEventToDragStart)
 
-export default class GraphComponent extends React.Component {
+export default class GraphRenderArea extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -28,7 +28,7 @@ export default class GraphComponent extends React.Component {
     this.setState({transformFunctions})
   }
 
-  handleDrag = event => {
+  handleNodeDrag = event => {
     const delta = this.state.transformFunctions.scaleScreenToWorld([event.deltaX, event.deltaY])
     const node = event.payload
     node.data.x += delta[0]
@@ -36,7 +36,7 @@ export default class GraphComponent extends React.Component {
     this.setState()
   }
 
-  handleDoubleClick = event => {
+  handleNodeCreate = event => {
     const p = this.state.transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
     const data = {
       text: 'aaa',
@@ -48,7 +48,7 @@ export default class GraphComponent extends React.Component {
     this.setState({graph})
   }
 
-  handleNodeMouseDown = (node, event) => {
+  handleStartConnecting = (node, event) => {
     if (event.button !== 2) return
     event.stopPropagation()
     const rect = this.componentRef.current.getBoundingClientRect()
@@ -63,12 +63,12 @@ export default class GraphComponent extends React.Component {
     })
   }
 
-  handleNodeMouseUp = (node) => {
+  handleEndConnecting = (node) => {
     if (node === this.state.connecting.from) return
     this.props.graph.edge(this.state.connecting.from, node)
   }
 
-  handleMouseMove = event => {
+  handleMoveConnecting = event => {
     const rect = this.componentRef.current.getBoundingClientRect()
     this.setState({
       connecting: {
@@ -79,81 +79,29 @@ export default class GraphComponent extends React.Component {
     })
   }
 
-  handleMouseUp = () => {
+  handleCancelConnecting = () => {
     this.setState({connecting: null})
   }
 
-  handleNodeDoubleClick = (node, event) => {
-    event.stopPropagation()
-    this.setState({
-      editing: {node}
-    })
-  }
-
-  handleMouseDown = event => {
-    event.preventDefault()
-    if (!this.state.editing) return
-
-    this.setState({editing: null})
-  }
-
-  handleEditNode = event => {
-    const node = this.state.editing.node
-    node.data.text = event.target.value
-    this.setState({})
-  }
-
   render() {
-    let editBox
-    if (this.state.editing) {
-      const p = [this.state.editing.node.data.x, this.state.editing.node.data.y]
-      const ps = this.state.transformFunctions.mapWorldToScreen(p)
-      editBox = <input
-        type="text"
-        value={this.state.editing.node.data.text}
-        style={{
-          position: 'absolute',
-          left: ps[0],
-          top: ps[1],
-        }}
-        onChange={this.handleEditNode}
-        onMouseDown={evt => evt.stopPropagation()}
-        onKeyDown={evt => evt.keyCode === 13 && this.handleMouseDown(evt)}
-      />
-    }
-
-    return <div className='graph-component'
+    return <div className='graph-render-area'
       ref={this.componentRef}
-      onDoubleClick={this.handleDoubleClick}
+      onDoubleClick={this.handleNodeCreate}
       onMouseDown={this.handleMouseDown}
-      onMouseMove={this.state.connecting ? this.handleMouseMove : null}
-      onMouseUp={this.state.connecting ? this.handleMouseUp : null}
+      onMouseMove={this.state.connecting ? this.handleMoveConnecting : null}
+      onMouseUp={this.state.connecting ? this.handleCancelConnecting : null}
     >
       <Graph
         {...this.props}
         scale={this.state.initialScale}
         onGetTransformFunctions={this.handleGetTransformFunctions}
-        onDrag={this.handleDrag}
-        onNodeMouseDown={this.handleNodeMouseDown}
-        onNodeMouseUp={this.state.connecting && this.handleNodeMouseUp}
-        onNodeDoubleClick={this.handleNodeDoubleClick}
+        onDrag={this.handleNodeDrag}
+        onNodeMouseDown={this.handleStartConnecting}
+        onNodeMouseUp={this.state.connecting && this.handleEndConnecting}
       />
       {
-        this.state.connecting && <svg
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            overflow: 'visible',
-            pointerEvents: 'none',
-            fill: '#ffb',
-            stroke: 'black',
-            strokeWidth: '3px',
-          }}
-        >
-          <line
+        this.state.connecting && <svg className='connecting-container'>
+          <line className='connecting-line'
             x1={this.state.connecting.startX}
             y1={this.state.connecting.startY}
             x2={this.state.connecting.endX}
@@ -161,7 +109,6 @@ export default class GraphComponent extends React.Component {
           />
         </svg>
       }
-      {editBox}
     </div>
   }
 }

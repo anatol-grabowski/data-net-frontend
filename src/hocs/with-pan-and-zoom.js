@@ -71,7 +71,6 @@ export default function withPanAndZoom(Child) {
       ]
       const pWorld = this.mapScreenToWorld([evt.pageX, evt.pageY])
       const pAfterScale = this.mapWorldToScreen(pWorld, newScale)
-
       const translateToKeepPointUnderCursorStatic = [
         this.state.translate[0] + (p[0] - pAfterScale[0]),
         this.state.translate[1] + (p[1] - pAfterScale[1]),
