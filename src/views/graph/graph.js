@@ -20,6 +20,7 @@ export default function graph(Node, Edge) {
                     <Edge
                       key={edge.id}
                       edge={edge}
+                      onDoubleClick={this.props.onEdgeDoubleClick && (evt => this.props.onEdgeDoubleClick(edge, evt))}
                     />
                   )
                 })

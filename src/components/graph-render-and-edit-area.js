@@ -14,6 +14,13 @@ export default class GraphAndEditArea extends React.Component {
     })
   }
 
+  handleEdgeDoubleClick = (edge, event) => {
+    event.stopPropagation()
+    this.setState({
+      editing: {edge}
+    })
+  }
+
   handleInputChange = event => {
     const node = this.state.editing.node
     node.data.text = event.target.value
@@ -25,9 +32,15 @@ export default class GraphAndEditArea extends React.Component {
   }
 
   handleRemove = () => {
-    console.log('rm', this.state.editing.node)
-    this.state.editing.node.remove()
-    this.setState({})
+    if (this.state.editing.node) {
+      this.state.editing.node.remove()
+      console.log('removed node:', this.state.editing.node.id)
+    }
+    if (this.state.editing.edge) {
+      this.state.editing.edge.remove()
+      console.log('removed edge:', this.state.editing.edge.id)
+    }
+    this.setState({editing: null})
   }
 
   render() {
@@ -42,6 +55,7 @@ export default class GraphAndEditArea extends React.Component {
       <Graph
         {...this.props}
         onNodeDoubleClick={this.handleNodeDoubleClick}
+        onEdgeDoubleClick={this.handleEdgeDoubleClick}
         onNodeMouseDown={this.handleNodeMouseDown}
       />
       <div className='graph-edit-area'>
@@ -56,7 +70,13 @@ export default class GraphAndEditArea extends React.Component {
             onMouseDown={evt => evt.stopPropagation()}
             onKeyDown={evt => evt.keyCode === 13 && this.setState({editing: null})}
           />
-          <input type='button' value='del' onClick={this.handleRemove}></input>
+          <input type='button' value='Remove' onClick={this.handleRemove}></input>
+        </div>}
+        {this.state.editing && this.state.editing.edge && <div className='edge-edit'>
+          <div>{`edge id: ${this.state.editing.edge.id}`}</div><br/>
+          <div>{`from: ${this.state.editing.edge.from.id}`}</div><br/>
+          <div>{`to:   ${this.state.editing.edge.to.id}`}</div><br/>
+          <input type='button' value='Remove' onClick={this.handleRemove}></input>
         </div>}
         {!this.state.editing && <div className='graph-edit'>
           {`nodes #: ${graph.nodes.length}`}<br/>

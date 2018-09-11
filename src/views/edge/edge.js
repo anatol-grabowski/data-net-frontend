@@ -8,6 +8,7 @@ export default class Edge extends React.Component {
         y1={this.props.edge.from.data.y}
         x2={this.props.edge.to.data.x}
         y2={this.props.edge.to.data.y}
+        onDoubleClick={this.props.onDoubleClick}
       />
     )
   }

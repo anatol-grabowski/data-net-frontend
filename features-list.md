@@ -6,7 +6,9 @@
 - create edges (component), draws in screen space
 - edit nodes (component), uses mapWorldToScreen to get input's left and right
 - save graph
-
-# To do
 - delete edges
 - delete nodes
+
+# To do
+- node details
+- attachments
