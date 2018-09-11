@@ -5,8 +5,8 @@
 - create nodes (component), uses mapScreenToWorld to get node's x and y
 - create edges (component), draws in screen space
 - edit nodes (component), uses mapWorldToScreen to get input's left and right
+- save graph
 
 # To do
-- save graph
 - delete edges
 - delete nodes

@@ -28,6 +28,17 @@ class App extends React.Component {
     }
   }
 
+  handleKeyDown = event => {
+    let charCode = String.fromCharCode(event.which).toLowerCase()
+    if (event.ctrlKey && charCode === 's') {
+      event.preventDefault()
+      console.log('Ctrl + S pressed')
+      this.setState({backgroundText: helpText + '\n\nSaving'})
+      GraphApi.saveGraph(this.state.graph)
+        .then(() => this.setState({backgroundText: helpText + '\n\nSaved\n' + new Date()}))
+        .catch(err => this.setState({backgroundText: helpText + '\n\nError while saving\n' + err}))
+    }
+  }
 
   componentDidMount() {
     this.setState({backgroundText: helpText + '\n\nOpening graph'})
@@ -54,7 +65,11 @@ class App extends React.Component {
         <span>
           slfjsldj
         </span>
-        <div className='graph-container'>
+        <div className='graph-container'
+          onKeyDown={this.handleKeyDown}
+          tabIndex="0"
+        >
+          <div style={{position: 'absolute', whiteSpace: 'pre', color: 'gray'}}>{this.state.backgroundText}</div>
           {this.state.graph && <Graph graph={this.state.graph}/>}
         </div>
       </div>

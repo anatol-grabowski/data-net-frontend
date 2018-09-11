@@ -10,8 +10,8 @@ body {
 }
 
 .graph-container {
-  width: 800px;
-  height: 700px;
+  width: 90vw;
+  height: 90vh;
   display: inline-block;
   border: 1px solid blue;
 }
