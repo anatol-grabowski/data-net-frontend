@@ -27,6 +27,12 @@ export default class GraphAndEditArea extends React.Component {
     this.setState({})
   }
 
+  handleDetailsChange = event => {
+    const node = this.state.editing.node
+    node.data.details = event.target.value
+    this.setState({})
+  }
+
   handleNodeMouseDown = (node, event) => {
     console.log('nmd', node.id, event)
   }
@@ -62,11 +68,19 @@ export default class GraphAndEditArea extends React.Component {
         {this.state.editing && this.state.editing.node && <div className='node-edit'>
           <div>{`node id: ${this.state.editing.node.id}`}</div><br/>
           <div>{`node xy: ${this.state.editing.node.data.x}, ${this.state.editing.node.data.y}`}</div><br/>
-          <div>node text:</div>
+          <div>Text:</div>
           <input
             type="text"
-            value={this.state.editing.node.data.text}
+            value={this.state.editing.node.data.text || ''}
             onChange={this.handleInputChange}
+            onMouseDown={evt => evt.stopPropagation()}
+            onKeyDown={evt => evt.keyCode === 13 && this.setState({editing: null})}
+          />
+          <div>Details:</div>
+          <input
+            type="text"
+            value={this.state.editing.node.data.details || ''}
+            onChange={this.handleDetailsChange}
             onMouseDown={evt => evt.stopPropagation()}
             onKeyDown={evt => evt.keyCode === 13 && this.setState({editing: null})}
           />

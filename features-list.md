@@ -8,7 +8,8 @@
 - save graph
 - delete edges
 - delete nodes
+- node details
 
 # To do
-- node details
+- node hints
 - attachments
