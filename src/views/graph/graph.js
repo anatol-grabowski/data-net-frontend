@@ -13,6 +13,11 @@ export default function graph(Node, Edge) {
       return (
         <div className="graph">
           <svg className="edges">
+            <defs>
+              <marker id="arrow" markerWidth="30" markerHeight="10" refX="30" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L30,3 z" fill="#000" />
+              </marker>
+            </defs>
             <g>
               {
                 graph.edges.map(edge => {

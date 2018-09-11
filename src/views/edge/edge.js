@@ -9,6 +9,7 @@ export default class Edge extends React.Component {
         x2={this.props.edge.to.data.x}
         y2={this.props.edge.to.data.y}
         onDoubleClick={this.props.onDoubleClick}
+        markerEnd="url(#arrow)"
       />
     )
   }
