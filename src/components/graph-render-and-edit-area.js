@@ -49,6 +49,14 @@ export default class GraphAndEditArea extends React.Component {
     this.setState({editing: null})
   }
 
+  handleInvert = () => {
+    const edge = this.state.editing.edge
+    const from = edge.from
+    edge.from = edge.to
+    edge.to = from
+    this.setState({})
+  }
+
   render() {
     const graph = this.props.graph
     return <div className='graph-render-and-edit-area'
@@ -90,6 +98,7 @@ export default class GraphAndEditArea extends React.Component {
           <div>{`edge id: ${this.state.editing.edge.id}`}</div><br/>
           <div>{`from: ${this.state.editing.edge.from.id}`}</div><br/>
           <div>{`to:   ${this.state.editing.edge.to.id}`}</div><br/>
+          <input type='button' value='Invert' onClick={this.handleInvert}></input>
           <input type='button' value='Remove' onClick={this.handleRemove}></input>
         </div>}
         {!this.state.editing && <div className='graph-edit'>

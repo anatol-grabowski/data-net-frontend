@@ -9,7 +9,9 @@
 - delete edges
 - delete nodes
 - node details
+- edge arrows
 
 # To do
 - node hints
+- nodes collapse
 - attachments
