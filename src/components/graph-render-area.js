@@ -96,7 +96,10 @@ export default class GraphRenderArea extends React.Component {
         scale={this.state.initialScale}
         onGetTransformFunctions={this.handleGetTransformFunctions}
         onDrag={this.handleNodeDrag}
-        onNodeMouseDown={this.handleStartConnecting}
+        onNodeMouseDown={(node, evt) => {
+          this.handleStartConnecting(node, evt)
+          this.props.onNodeMouseDown && this.props.onNodeMouseDown(node, evt)
+        }}
         onNodeMouseUp={this.state.connecting && this.handleEndConnecting}
       />
       {

@@ -20,6 +20,16 @@ export default class GraphAndEditArea extends React.Component {
     this.setState({})
   }
 
+  handleNodeMouseDown = (node, event) => {
+    console.log('nmd', node.id, event)
+  }
+
+  handleRemove = () => {
+    console.log('rm', this.state.editing.node)
+    this.state.editing.node.remove()
+    this.setState({})
+  }
+
   render() {
     const graph = this.props.graph
     return <div className='graph-render-and-edit-area'
@@ -32,6 +42,7 @@ export default class GraphAndEditArea extends React.Component {
       <Graph
         {...this.props}
         onNodeDoubleClick={this.handleNodeDoubleClick}
+        onNodeMouseDown={this.handleNodeMouseDown}
       />
       <div className='graph-edit-area'>
         {this.state.editing && this.state.editing.node && <div className='node-edit'>
@@ -45,6 +56,7 @@ export default class GraphAndEditArea extends React.Component {
             onMouseDown={evt => evt.stopPropagation()}
             onKeyDown={evt => evt.keyCode === 13 && this.setState({editing: null})}
           />
+          <input type='button' value='del' onClick={this.handleRemove}></input>
         </div>}
         {!this.state.editing && <div className='graph-edit'>
           {`nodes #: ${graph.nodes.length}`}<br/>

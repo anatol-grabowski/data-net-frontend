@@ -1,8 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './graph.css'
 
 export default function graph(Node, Edge) {
-  return class Graph extends React.Component {
+  class Graph extends React.Component {
     componentDidUpdate() {
       console.log('graph did update')
     }
@@ -44,4 +45,16 @@ export default function graph(Node, Edge) {
       )
     }
   }
+
+  Graph.propTypes = {
+    graph: PropTypes.object,
+    onNodeMouseDown: PropTypes.func,
+    onNodeMouseUp: PropTypes.func,
+    onNodeDoubleClick: PropTypes.func,
+    onEdgeMouseDown: PropTypes.func,
+    onEdgeMouseUp: PropTypes.func,
+    onEdgeDoubleClick: PropTypes.func,
+  }
+
+  return Graph
 }
