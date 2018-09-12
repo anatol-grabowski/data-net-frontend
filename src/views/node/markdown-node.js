@@ -17,7 +17,7 @@ export default class Node extends React.Component {
         onMouseUp={this.props.onMouseUp}
         onDoubleClick={this.props.onDoubleClick}
       >
-        <ReactMarkdown source={data.text}/>
+        <ReactMarkdown className='node-markdown-container' source={data.text}/>
         {data.tags && <NodeTags tags={data.tags}/>}
       </div>
     )

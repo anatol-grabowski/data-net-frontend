@@ -22,6 +22,7 @@
 # Bugs
 - links should be rmb-clickable
 - tags end space
+- images shouldn't be draggable
 
 # Refactor
 - ugly code at graph-render-and-edit-area
