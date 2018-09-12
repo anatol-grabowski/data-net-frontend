@@ -10,9 +10,9 @@
 - node details
 - edge arrows
 - markdown
+- tags
 
 # To do
-- tags
 - attachments (dropbox)
 - node hints
 - tags search
@@ -21,6 +21,7 @@
 
 # Bugs
 - links should be rmb-clickable
+- tags end space
 
 # Refactor
 - ugly code at graph-render-and-edit-area

@@ -33,6 +33,12 @@ export default class GraphAndEditArea extends React.Component {
     this.setState({})
   }
 
+  handleTagsChange = event => {
+    const node = this.state.editing.node
+    node.data.tags = event.target.value.replace(/\s{2,}/g, ' ').split(' ')
+    this.setState({})
+  }
+
   handleNodeMouseDown = (node, event) => {
     console.log('nmd', node.id, event)
   }
@@ -89,7 +95,12 @@ export default class GraphAndEditArea extends React.Component {
             value={this.state.editing.node.data.details || ''}
             onChange={this.handleDetailsChange}
             onMouseDown={evt => evt.stopPropagation()}
-            onKeyDown={evt => evt.keyCode === 13 && this.setState({editing: null})}
+          />
+          <div>Tags (space separated):</div>
+          <textarea
+            value={this.state.editing.node.data.tags ? this.state.editing.node.data.tags.join(' ') : ''}
+            onChange={this.handleTagsChange}
+            onMouseDown={evt => evt.stopPropagation()}
           />
           <input type='button' value='Remove' onClick={this.handleRemove}></input>
         </div>}

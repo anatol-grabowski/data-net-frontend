@@ -1,0 +1,12 @@
+.node .node-tags {
+  border-width: 1px-solid-black;
+}
+
+.node-tags .node-tag {
+  display: inline-block;
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 0.1rem;
+  padding: 0 0.1rem;
+  background: #ffd;
+}
