@@ -31,6 +31,16 @@
   background-color:#ffb;
   transform: translate(-50%, -50%);
   position: absolute;
+  cursor: default;
+  user-select: none;
+}
+
+.node > div > :first-child {
+  margin-top: 0.0rem;
+}
+
+.node > div > :last-child {
+  margin-bottom: 0.0rem;
 }
 
 .node:hover {
@@ -39,7 +49,6 @@
 
 .node-text {
   text-anchor: middle;
-  user-select: none;
 }
 
 .edge {

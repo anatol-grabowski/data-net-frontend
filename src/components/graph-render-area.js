@@ -1,6 +1,6 @@
 import React from 'react'
 import graph from '../views/graph/graph'
-import Node from '../views/node/node'
+import Node from '../views/node/markdown-node'
 import Edge from '../views/edge/edge'
 import withPanAndZoom from '../hocs/with-pan-and-zoom'
 import withDrag from '../hocs/with-drag'

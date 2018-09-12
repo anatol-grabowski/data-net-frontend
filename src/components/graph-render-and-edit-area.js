@@ -77,16 +77,15 @@ export default class GraphAndEditArea extends React.Component {
           <div>{`node id: ${this.state.editing.node.id}`}</div><br/>
           <div>{`node xy: ${this.state.editing.node.data.x}, ${this.state.editing.node.data.y}`}</div><br/>
           <div>Text:</div>
-          <input
-            type="text"
+          <textarea
+            rows={10}
             value={this.state.editing.node.data.text || ''}
             onChange={this.handleInputChange}
             onMouseDown={evt => evt.stopPropagation()}
-            onKeyDown={evt => evt.keyCode === 13 && this.setState({editing: null})}
+            // onKeyDown={evt => evt.keyCode === 13 && this.setState({editing: null})}
           />
           <div>Details:</div>
-          <input
-            type="text"
+          <textarea
             value={this.state.editing.node.data.details || ''}
             onChange={this.handleDetailsChange}
             onMouseDown={evt => evt.stopPropagation()}

@@ -12,12 +12,12 @@
   },
   "dependencies": {
     "data-net": "git+https://github.com/grabantot/data-net#eventful",
+    "eslint": "^5.2.0",
+    "eslint-plugin-react": "^7.10.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-scripts": "1.1.4",
-    "eslint": "^5.2.0",
-    "eslint-plugin-react": "^7.10.0"
+    "react-markdown": "^3.6.0",
+    "react-scripts": "1.1.4"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

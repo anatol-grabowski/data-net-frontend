@@ -6,10 +6,11 @@ import Graph from './components/graph-render-and-edit-area'
 import withPanAndZoom from './hocs/with-pan-and-zoom'
 
 const helpText = `
-LMB double click - create node
+LMB double click on empty space - create node
 LMB on node and drag - move node
 
 RMB on node and drag - create edge (connection) to another node
+LMB double click on node/edge - edit node/edge
 
 mouse wheel - zoom
 LMB on empty space and drag - pan
@@ -33,6 +34,7 @@ class App extends React.Component {
     if (event.ctrlKey && charCode === 's') {
       event.preventDefault()
       console.log('Ctrl + S pressed')
+      if (!this.state.graph) return
       this.setState({backgroundText: helpText + '\n\nSaving'})
       GraphApi.saveGraph(this.state.graph)
         .then(() => this.setState({backgroundText: helpText + '\n\nSaved\n' + new Date()}))
@@ -69,7 +71,7 @@ class App extends React.Component {
           onKeyDown={this.handleKeyDown}
           tabIndex="0"
         >
-          <div style={{position: 'absolute', whiteSpace: 'pre', color: 'gray'}}>{this.state.backgroundText}</div>
+          <div style={{position: 'absolute', whiteSpace: 'pre', color: 'gray', userSelect: 'none'}}>{this.state.backgroundText}</div>
           {this.state.graph && <Graph graph={this.state.graph}/>}
         </div>
       </div>
