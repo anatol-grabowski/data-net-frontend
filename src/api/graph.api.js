@@ -1,8 +1,7 @@
 import { Graph } from 'data-net'
+import { apiUrl } from './api-url'
 
-const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080'
 const standalone = process.env.REACT_APP_STANDALONE === 'true'
-
 if (standalone) console.log(`REACT_APP_STANDALONE=${standalone}`)
 else console.log(`REACT_APP_API_URL=${apiUrl}`)
 

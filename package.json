@@ -11,11 +11,13 @@
     "remote": "REACT_APP_API_URL='https://shielded-cove-66557.herokuapp.com' react-scripts start"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "data-net": "git+https://github.com/grabantot/data-net#eventful",
     "eslint": "^5.2.0",
     "eslint-plugin-react": "^7.10.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-dropzone": "^5.1.0",
     "react-markdown": "^3.6.0",
     "react-scripts": "1.1.4"
   },

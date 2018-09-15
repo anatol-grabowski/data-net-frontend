@@ -19,6 +19,11 @@ Ctrl + S - save graph
 
 To open a graph enter its name to the location bar after '/', e.g. 'http://localhost:3000/js' will open a graph named 'js'.
 If the graph with this name doesn't exist then it will be created on save.
+
+Source code:
+https://github.com/grabantot/data-net
+https://github.com/grabantot/data-net-backend
+https://github.com/grabantot/data-net-frontend
 `
 
 class App extends React.Component {
@@ -63,9 +68,9 @@ class App extends React.Component {
 
     return (
       <div>
-        <Comp/>
+        <DivWithPanAndZoom/>
         <span>
-          slfjsldj
+          slf
         </span>
         <div className='graph-container'
           onKeyDown={this.handleKeyDown}
@@ -81,9 +86,9 @@ class App extends React.Component {
 
 const Div = () => (<div>
   some text to add offsets and see<br/>
-  if render area still calculates positions correctly
+  if render area still calculates positions correctly and the content stays withing the container
 </div>)
-const Comp = withPanAndZoom(Div)
+const DivWithPanAndZoom = withPanAndZoom(Div)
 
 // ========================================
 

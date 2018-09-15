@@ -1,5 +1,7 @@
 import React from 'react'
 import Graph from './graph-render-area'
+import Dropzone from 'react-dropzone'
+import { uploadFile } from '../api/upload.api'
 
 export default class GraphAndEditArea extends React.Component {
   constructor(props) {
@@ -63,6 +65,16 @@ export default class GraphAndEditArea extends React.Component {
     this.setState({})
   }
 
+  handleAddAttachments = (files) => {
+    console.log(files)
+    this.setState({attachments: files})
+  }
+
+  handleUploadAttachments = async () => {
+    console.log(this.state.attachments)
+    await uploadFile(this.state.attachments[0])
+  }
+
   render() {
     const graph = this.props.graph
     return <div className='graph-render-and-edit-area'
@@ -103,6 +115,12 @@ export default class GraphAndEditArea extends React.Component {
             onMouseDown={evt => evt.stopPropagation()}
           />
           <input type='button' value='Remove' onClick={this.handleRemove}></input>
+          <div className="dropzone">
+            <Dropzone onDrop={this.handleAddAttachments}>
+              <p>Try dropping some files here, or click to select files to upload.</p>
+            </Dropzone>
+          </div>
+          <input type='button' value='Attach' onClick={this.handleUploadAttachments}></input>
         </div>}
         {this.state.editing && this.state.editing.edge && <div className='edge-edit'>
           <div>{`edge id: ${this.state.editing.edge.id}`}</div><br/>

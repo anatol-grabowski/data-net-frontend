@@ -18,24 +18,18 @@ export default class Node extends React.Component {
         onDoubleClick={this.props.onDoubleClick}
       >
         <ReactMarkdown className='node-markdown-container' source={data.text}/>
-        {data.tags && <NodeTags tags={data.tags}/>}
+        <NodeTags tags={data.tags || []}/>
       </div>
     )
   }
 }
 
-function NodeTags({tags}) {
-  return (
-    <div className='node-tags'>
-      {tags.map((tag, i) => <NodeTag key={i} text={tag}/>)}
-    </div>
-  )
-}
+const NodeTags = ({tags}) => (
+  <div className='node-tags'>
+    {tags.map((tag, i) => <NodeTag key={i} text={tag}/>)}
+  </div>
+)
 
-class NodeTag extends React.Component {
-  render() {
-    return (
-      <div className='node-tag'>{this.props.text}</div>
-    )
-  }
-}
+const NodeTag = ({text}) => (
+  <div className='node-tag'>{text}</div>
+)
