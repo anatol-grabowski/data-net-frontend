@@ -11,6 +11,14 @@
   background: #ffd;
 }
 
+.node .node-markdown-container * {
+  margin: 0;
+}
+
+.node .node-markdown-container ul {
+  padding-left: 1.8rem;
+}
+
 .node-wrapper .node-attachments {
   display: inline-block;
   position: absolute;
