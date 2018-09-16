@@ -6,19 +6,22 @@ export default class Node extends React.Component {
   render() {
     const data = this.props.node.data
     return (
-      <div className="node"
+      <div className="node-wrapper"
         style={{
           top: data.y + 'px',
           left: data.x + 'px',
         }}
-        title={data.details}
-        onMouseDown={this.props.onMouseDown}
-        onContextMenu={evt => evt.preventDefault()}
-        onMouseUp={this.props.onMouseUp}
-        onDoubleClick={this.props.onDoubleClick}
       >
-        <ReactMarkdown className='node-markdown-container' source={data.text}/>
-        <NodeTags tags={data.tags || []}/>
+        <div className="node"
+          title={data.details}
+          onMouseDown={this.props.onMouseDown}
+          onContextMenu={evt => evt.preventDefault()}
+          onMouseUp={this.props.onMouseUp}
+          onDoubleClick={this.props.onDoubleClick}
+        >
+          <ReactMarkdown className='node-markdown-container' source={data.text}/>
+          <NodeTags tags={data.tags || []}/>
+        </div>
         <NodeAttachments attachments={data.attachments}/>
       </div>
     )
@@ -36,5 +39,8 @@ const NodeTag = ({text}) => (
 )
 
 const NodeAttachments = ({attachments = []}) => (
-  attachments.length > 0 && <div className='node-attachments'></div>
+  attachments.length > 0 && <div className='node-attachments'>
+    <div className='top'></div>
+    <div className='bottom'></div>
+  </div>
 )

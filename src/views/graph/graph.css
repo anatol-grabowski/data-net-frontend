@@ -21,6 +21,11 @@
   pointer-events: all;
 }
 
+.node-wrapper {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
 .node {
   display: inline-block;
   white-space: pre;
@@ -28,9 +33,7 @@
   border: solid black 2px;
   border-radius: 10px;
   padding: 5px 10px;
-  background-color:#ffb;
-  transform: translate(-50%, -50%);
-  position: absolute;
+  background-color: rgba(255, 255, 187, 0.9);
   cursor: default;
   user-select: none;
 }
@@ -45,6 +48,7 @@
 
 .node:hover {
   border-width: 4px;
+  /* transition: 50ms; */
 }
 
 .node-text {
