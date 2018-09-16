@@ -20,3 +20,9 @@ rules:
   comma-dangle: [warn, only-multiline]
   no-console: [off]
   react/prop-types: [error, {skipUndeclared: true}]
+  no-unused-vars:
+    - error
+    -
+      vars: "all"
+      args: "after-used"
+      argsIgnorePattern: "^(state|props)$"

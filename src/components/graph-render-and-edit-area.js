@@ -88,6 +88,12 @@ export default class GraphAndEditArea extends React.Component {
     this.setState({})
   }
 
+  handleAttachmentRemove = async (node, i) => {
+    console.log(node.id, i)
+    node.data.attachments.splice(i, 1)
+    this.setState({})
+  }
+
   render() {
     const graph = this.props.graph
     return <div className='graph-render-and-edit-area'
@@ -129,7 +135,10 @@ export default class GraphAndEditArea extends React.Component {
           />
           <input type='button' value='Remove' onClick={this.handleRemove}></input>
           <div>Attachments:</div>
-          <AttachmentsList attachments={this.state.editing.node.data.attachments}/>
+          <AttachmentsList
+            attachments={this.state.editing.node.data.attachments}
+            onAttachmentRemove={(att, i) => this.handleAttachmentRemove(this.state.editing.node, i)}
+          />
           <div className="dropzone">
             <Dropzone onDrop={this.handleAddAttachments}>
               <p>Try dropping some files here, or click to select files to upload.</p>
@@ -153,14 +162,16 @@ export default class GraphAndEditArea extends React.Component {
   }
 }
 
-const AttachmentsList = ({attachments = []}) => (
+const AttachmentsList = ({attachments = [], onAttachmentRemove}) => (
   <div className='attachments-list'>
     {
       attachments.map((att, i) => (
-        <a className='attachment'
-          key={i}
-          href={makeDownloadLink(att.filepath)}
-        >{att.filepath}</a>
+        <div className='attachment' key={i}>
+          <input type='button' value='X' onClick={() => onAttachmentRemove(att, i)}></input>
+          <a
+            href={makeDownloadLink(att.filepath)}
+          >{att.filepath}</a>
+        </div>
       ))
     }
   </div>
