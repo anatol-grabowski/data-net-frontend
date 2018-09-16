@@ -1,7 +1,8 @@
 import React from 'react'
 import Graph from './graph-render-area'
 import Dropzone from 'react-dropzone'
-import { uploadFile } from '../api/upload.api'
+import { uploadFile, makeDownloadLink } from '../api/upload.api'
+import './graph-render-and-edit-area.css'
 
 export default class GraphAndEditArea extends React.Component {
   constructor(props) {
@@ -72,7 +73,19 @@ export default class GraphAndEditArea extends React.Component {
 
   handleUploadAttachments = async () => {
     console.log(this.state.attachments)
-    await uploadFile(this.state.attachments[0])
+    const node = this.state.editing.node
+    const uploadResponse = await uploadFile(this.state.attachments[0])
+    console.log('uploadResponse:', uploadResponse)
+    const newAttachments = uploadResponse.metadatas.map(met => {
+      const attachment = {
+        filepath: met.path_display,
+      }
+      return attachment
+    })
+    console.log('newAtt:', newAttachments)
+    if (!node.data.attachments) node.data.attachments = []
+    node.data.attachments.push(...newAttachments)
+    this.setState({})
   }
 
   render() {
@@ -115,6 +128,8 @@ export default class GraphAndEditArea extends React.Component {
             onMouseDown={evt => evt.stopPropagation()}
           />
           <input type='button' value='Remove' onClick={this.handleRemove}></input>
+          <div>Attachments:</div>
+          <AttachmentsList attachments={this.state.editing.node.data.attachments}/>
           <div className="dropzone">
             <Dropzone onDrop={this.handleAddAttachments}>
               <p>Try dropping some files here, or click to select files to upload.</p>
@@ -137,3 +152,16 @@ export default class GraphAndEditArea extends React.Component {
     </div>
   }
 }
+
+const AttachmentsList = ({attachments = []}) => (
+  <div className='attachments-list'>
+    {
+      attachments.map((att, i) => (
+        <a className='attachment'
+          key={i}
+          href={makeDownloadLink(att.filepath)}
+        >{att.filepath}</a>
+      ))
+    }
+  </div>
+)

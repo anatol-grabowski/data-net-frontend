@@ -8,6 +8,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "standalone": "REACT_APP_STANDALONE=true react-scripts start # run without relying on backend",
+    "local": "REACT_APP_API_URL='http://localhost:8080' react-scripts start",
     "remote": "REACT_APP_API_URL='https://shielded-cove-66557.herokuapp.com' react-scripts start"
   },
   "dependencies": {

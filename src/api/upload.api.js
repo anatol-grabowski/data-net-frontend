@@ -12,6 +12,17 @@ export async function uploadFile(file) {
   }
   const url = apiUrl + '/upload'
   const res = await axios.post(url, formData, config)
-  console.log('uploaded', res)
-  return res
+  return res.data
+}
+
+export async function downloadFile(filepath) {
+  console.log('download', filepath)
+  const url = apiUrl + '/download?filepath=' + encodeURIComponent(filepath)
+  const res = await axios.get(url)
+  console.log('downloaded:', res)
+}
+
+export function makeDownloadLink(filepath) {
+  const url = apiUrl + '/download?filepath=' + encodeURIComponent(filepath)
+  return url
 }

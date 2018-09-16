@@ -19,6 +19,7 @@ export default class Node extends React.Component {
       >
         <ReactMarkdown className='node-markdown-container' source={data.text}/>
         <NodeTags tags={data.tags || []}/>
+        <NodeAttachments attachments={data.attachments}/>
       </div>
     )
   }
@@ -32,4 +33,8 @@ const NodeTags = ({tags}) => (
 
 const NodeTag = ({text}) => (
   <div className='node-tag'>{text}</div>
+)
+
+const NodeAttachments = ({attachments = []}) => (
+  attachments.length > 0 && <div className='node-attachments'></div>
 )
