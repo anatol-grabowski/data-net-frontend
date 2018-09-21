@@ -11,10 +11,16 @@
 - edge arrows
 - markdown
 - tags
+- node hints
+- attachments upload, download, delete (dropbox)
+- nice paper clip
 
 # To do
-- attachments (dropbox)
-- node hints
+- pure data-net object
+- collaborative editing
+- private graphs
+- select and move/copy multiple nodes
+- arrows to edges of nodes (not centers)
 - tags search
 - nodes collapse, focus
 - node clusters
