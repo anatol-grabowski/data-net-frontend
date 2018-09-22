@@ -69,7 +69,7 @@ class App extends React.Component {
     return (
       <div>
         <DivWithPanAndZoom/>
-        <span>
+        <span className='test-offset'>
           slf
         </span>
         <div className='graph-container'
@@ -84,7 +84,7 @@ class App extends React.Component {
   }
 }
 
-const Div = () => (<div>
+const Div = () => (<div className='test-offset'>
   some text to add offsets and see<br/>
   if render area still calculates positions correctly and the content stays withing the container
 </div>)
