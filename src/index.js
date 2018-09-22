@@ -76,7 +76,7 @@ class App extends React.Component {
           onKeyDown={this.handleKeyDown}
           tabIndex="0"
         >
-          <div style={{position: 'absolute', whiteSpace: 'pre', color: '#ccc', userSelect: 'none'}}>{this.state.backgroundText}</div>
+          <div className='graph-info-text'>{this.state.backgroundText}</div>
           {this.state.graph && <Graph graph={this.state.graph}/>}
         </div>
       </div>

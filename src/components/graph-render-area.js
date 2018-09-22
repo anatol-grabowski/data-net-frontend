@@ -44,8 +44,9 @@ export default class GraphRenderArea extends React.Component {
       y: p[1],
     }
     const graph = this.props.graph
-    graph.node(data)
+    const node = graph.node(data)
     this.setState({graph})
+    this.props.onNodeCreate && this.props.onNodeCreate(node)
   }
 
   handleStartConnecting = (node, event) => {

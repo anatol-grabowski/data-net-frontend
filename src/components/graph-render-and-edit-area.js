@@ -10,6 +10,12 @@ export default class GraphAndEditArea extends React.Component {
     this.state = {}
   }
 
+  handleNodeCreate = (node) => {
+    this.setState({
+      editing: {node}
+    })
+  }
+
   handleNodeDoubleClick = (node, event) => {
     event.stopPropagation()
     this.setState({
@@ -105,6 +111,7 @@ export default class GraphAndEditArea extends React.Component {
     >
       <Graph
         {...this.props}
+        onNodeCreate={this.handleNodeCreate}
         onNodeDoubleClick={this.handleNodeDoubleClick}
         onEdgeDoubleClick={this.handleEdgeDoubleClick}
         onNodeMouseDown={this.handleNodeMouseDown}
@@ -114,7 +121,8 @@ export default class GraphAndEditArea extends React.Component {
           <div>{`node id: ${this.state.editing.node.id}`}</div><br/>
           <div>{`node xy: ${this.state.editing.node.data.x}, ${this.state.editing.node.data.y}`}</div><br/>
           <div>Text:</div>
-          <textarea
+          <textarea 
+            ref={input => input && input.focus()}
             rows={10}
             value={this.state.editing.node.data.text || ''}
             onChange={this.handleInputChange}
@@ -139,11 +147,9 @@ export default class GraphAndEditArea extends React.Component {
             attachments={this.state.editing.node.data.attachments}
             onAttachmentRemove={(att, i) => this.handleAttachmentRemove(this.state.editing.node, i)}
           />
-          <div className="dropzone">
-            <Dropzone onDrop={this.handleAddAttachments}>
-              <p>Try dropping some files here, or click to select files to upload.</p>
-            </Dropzone>
-          </div>
+          <Dropzone className='dropzone' onDrop={this.handleAddAttachments}>
+            <p>Try dropping some files here, or click to select files to upload.</p>
+          </Dropzone>
           <input type='button' value='Attach' onClick={this.handleUploadAttachments}></input>
         </div>}
         {this.state.editing && this.state.editing.edge && <div className='edge-edit'>
