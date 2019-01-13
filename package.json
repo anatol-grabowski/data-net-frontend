@@ -15,14 +15,18 @@
     "axios": "^0.18.0",
     "data-net": "git+https://github.com/grabantot/data-net#eventful",
     "debug": "^4.1.1",
-    "eslint": "^5.2.0",
-    "eslint-plugin-react": "^7.10.0",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-dropzone": "^5.1.0",
     "react-markdown": "^3.6.0",
-    "react-scripts": "1.1.4",
+    "react-scripts": "2.1.3",
     "recompose": "^0.30.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
