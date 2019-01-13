@@ -1,6 +1,14 @@
 import React from 'react'
+import Debug from 'debug'
+import logChangedProps from '../../utils/log-changed-props'
+
+const debug = Debug('edge')
 
 export default class Edge extends React.Component {
+  componentDidUpdate(prevProps) {
+    if (debug.enabled) logChangedProps(this.props, prevProps, debug)
+  }
+
   render() {
     return (
       <line className='edge'

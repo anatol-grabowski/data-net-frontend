@@ -1,7 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Debug from 'debug'
 import withGroupedEvents from '../../hocs/withGroupedEvents'
+import logChangedProps from '../../utils/log-changed-props'
 import './graph.css'
+
+const debug = Debug('graph')
 
 export default function graph(Node, Edge) {
   const Nodes = ({nodes, onNodeMouseDown, onNodeMouseUp, onNodeDoubleClick}) => (
@@ -38,17 +42,20 @@ export default function graph(Node, Edge) {
             <Edge
               key={edge.id}
               edge={edge}
-              onDoubleClick={onEdgeDoubleClick && (evt => onEdgeDoubleClick(edge, evt))}
+              onDoubleClick={onEdgeDoubleClick(edge)}
             />
           ))
         }
       </g>
     </svg>
   )
+  const EdgesWithGroupedEvents = withGroupedEvents({
+    onEdgeDoubleClick: 'edges',
+  })(Edges)
 
   class Graph extends React.Component {
-    componentDidUpdate() {
-      console.log('graph did update')
+    componentDidUpdate(prevProps) {
+      if (debug.enabled) logChangedProps(this.props, prevProps, debug)
     }
 
     render() {
@@ -56,7 +63,7 @@ export default function graph(Node, Edge) {
       const edges = this.props.graph.edges
       return (
         <div className="graph">
-          <Edges
+          <EdgesWithGroupedEvents
             edges={edges}
             onEdgeDoubleClick={this.props.onEdgeDoubleClick}
           />
