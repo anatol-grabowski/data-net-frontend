@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import withGroupedEvents from '../../hocs/withGroupedEvents'
 import './graph.css'
 
 export default function graph(Node, Edge) {
@@ -10,14 +11,19 @@ export default function graph(Node, Edge) {
           <Node
             key={node.id}
             node={node}
-            onMouseDown={onNodeMouseDown && (evt => onNodeMouseDown(node, evt))}
-            onMouseUp={onNodeMouseUp && (evt => onNodeMouseUp(node, evt))}
-            onDoubleClick={onNodeDoubleClick && (evt => onNodeDoubleClick(node, evt))}
+            onMouseDown={onNodeMouseDown(node)}
+            onMouseUp={onNodeMouseUp(node)}
+            onDoubleClick={onNodeDoubleClick(node)}
           />
         ))
       }
     </div>
   )
+  const NodesWithGroupedEvents = withGroupedEvents({
+    onNodeMouseDown: 'nodes',
+    onNodeMouseUp: 'nodes',
+    onNodeDoubleClick: 'nodes',
+  })(Nodes)
 
   const Edges = ({edges, onEdgeDoubleClick}) => (
     <svg className="edges">
@@ -54,7 +60,7 @@ export default function graph(Node, Edge) {
             edges={edges}
             onEdgeDoubleClick={this.props.onEdgeDoubleClick}
           />
-          <Nodes
+          <NodesWithGroupedEvents
             nodes={nodes}
             onNodeMouseDown={this.props.onNodeMouseDown}
             onNodeMouseUp={this.props.onNodeMouseUp}

@@ -14,6 +14,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "data-net": "git+https://github.com/grabantot/data-net#eventful",
+    "debug": "^4.1.1",
     "eslint": "^5.2.0",
     "eslint-plugin-react": "^7.10.0",
     "react": "^16.3.2",

@@ -1,8 +1,17 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
+// import Debug from 'debug'
 import './markdown-node.css'
 
+// const debug = Debug('markdown-node')
+
 export default class Node extends React.Component {
+  // componentDidUpdate(prevProps) {
+  //   Object.entries(this.props).forEach(([key, val]) =>
+  //     prevProps[key] !== val && debug(`Prop '${key}' changed`)
+  //   );
+  // }
+
   render() {
     const data = this.props.node.data
     return (
