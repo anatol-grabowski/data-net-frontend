@@ -1,9 +1,7 @@
 import React from 'react'
-import graph from '../views/graph/graph'
-import Node from '../views/node/markdown-node'
-import Edge from '../views/edge/edge'
-import withPanAndZoom from '../hocs/with-pan-and-zoom'
-import withDrag from '../hocs/with-drag'
+import { createGraph, Node, Edge } from '../../views/Graph'
+import withPanAndZoom from '../../hocs/with-pan-and-zoom'
+import withDrag from '../../hocs/with-drag'
 
 const convertNodeMouseDownEventToDragStart = (node, evt) => {
   if (evt.button !== 0) return
@@ -11,7 +9,7 @@ const convertNodeMouseDownEventToDragStart = (node, evt) => {
   return {x: evt.clientX, y: evt.clientY, payload: node}
 }
 
-let Graph = graph(Node, Edge)
+let Graph = createGraph(Node, Edge)
 Graph = withPanAndZoom(Graph)
 Graph = withDrag(Graph, 'onNodeMouseDown', convertNodeMouseDownEventToDragStart)
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import Debug from 'debug'
-import logChangedProps from '../../utils/log-changed-props'
+import logChangedProps from '../../../utils/log-changed-props'
 
 const debug = Debug('edge')
 

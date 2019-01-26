@@ -1,7 +1,7 @@
 import React from 'react'
 import Graph from './graph-render-area'
 import Dropzone from 'react-dropzone'
-import { uploadFile, makeDownloadLink } from '../api/upload.api'
+import { uploadFile, makeDownloadLink } from '../../../api/upload.api'
 import './graph-render-and-edit-area.css'
 
 export default class GraphAndEditArea extends React.Component {
@@ -121,7 +121,7 @@ export default class GraphAndEditArea extends React.Component {
           <div>{`node id: ${this.state.editing.node.id}`}</div><br/>
           <div>{`node xy: ${this.state.editing.node.data.x}, ${this.state.editing.node.data.y}`}</div><br/>
           <div>Text:</div>
-          <textarea 
+          <textarea
             ref={input => input && input.focus()}
             rows={10}
             value={this.state.editing.node.data.text || ''}

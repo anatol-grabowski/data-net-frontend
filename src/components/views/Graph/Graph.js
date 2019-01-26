@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Debug from 'debug'
 import withGroupedEvents from '../../hocs/withGroupedEvents'
-import logChangedProps from '../../utils/log-changed-props'
+import logChangedProps from '../../../utils/log-changed-props'
 import './graph.css'
 
 const debug = Debug('graph')

@@ -1,8 +1,8 @@
 import React from 'react'
 import './index.css'
 import GraphApi from './api/graph.api'
-import Graph from './components/graph-render-and-edit-area'
-import withPanAndZoom from './hocs/with-pan-and-zoom'
+import Graph from './components/containers/Graph/graph-render-and-edit-area'
+import withPanAndZoom from './components/hocs/with-pan-and-zoom'
 
 const helpText = `
 LMB double click on empty space - create node

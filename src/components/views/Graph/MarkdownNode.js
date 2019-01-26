@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import Debug from 'debug'
-import logChangedProps from '../../utils/log-changed-props'
+import logChangedProps from '../../../utils/log-changed-props'
 import './markdown-node.css'
 import { pure } from 'recompose'
 
