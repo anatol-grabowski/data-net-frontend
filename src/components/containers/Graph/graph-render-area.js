@@ -1,5 +1,5 @@
 import React from 'react'
-import { createGraph, Node, Edge } from '../../views/Graph'
+import { Graph as GraphView } from '../../views/Graph'
 import withPanAndZoom from '../../hocs/with-pan-and-zoom'
 import withDrag from '../../hocs/with-drag'
 
@@ -9,8 +9,7 @@ const convertNodeMouseDownEventToDragStart = (node, evt) => {
   return {x: evt.clientX, y: evt.clientY, payload: node}
 }
 
-let Graph = createGraph(Node, Edge)
-Graph = withPanAndZoom(Graph)
+let Graph = GraphView
 Graph = withDrag(Graph, 'onNodeMouseDown', convertNodeMouseDownEventToDragStart)
 
 export default class GraphRenderArea extends React.Component {

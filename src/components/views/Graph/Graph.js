@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Nodes from './Nodes'
 import Edges from './Edges'
+import withPanAndZoom from '../../hocs/with-pan-and-zoom'
 import styles from './Graph.module.scss'
 
-export default function Graph(props) {
+function Graph(props) {
   const {
     nodes,
     edges,
@@ -37,3 +38,5 @@ Graph.propTypes = {
   onNodeDoubleClick: PropTypes.func.isRequired,
   onEdgeDoubleClick: PropTypes.func.isRequired,
 }
+
+export default withPanAndZoom(Graph)

@@ -41,16 +41,20 @@ const edges = [
   },
 ]
 
+const handlers = {
+  onNodeMouseDown: action('node mouse down'),
+  onNodeMouseUp: action('node mouse up'),
+  onNodeDoubleClick: action('node double click'),
+  onEdgeDoubleClick: action('edge double click'),
+}
+
 export default () => (
   <div>
     <div className={styles.Container}>
       <Graph
         nodes={nodes}
         edges={edges}
-        onNodeMouseDown={action('node mouse down')}
-        onNodeMouseUp={action('node mouse up')}
-        onNodeDoubleClick={action('node double click')}
-        onEdgeDoubleClick={action('edge double click')}
+        {...handlers}
       />
     </div>
   </div>

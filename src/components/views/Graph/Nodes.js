@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import Node from './MarkdownNode'
+import Node from './Node'
 import withGroupedEvents from '../../hocs/withGroupedEvents'
 import styles from './Nodes.module.scss'
 

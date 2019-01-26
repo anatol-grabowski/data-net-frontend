@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styles from './Edge.module.scss'
+import { pure } from 'recompose'
 
-export default function Edge(props) {
+function Edge(props) {
   const {
     points,
     onDoubleClick,
@@ -24,3 +25,5 @@ Edge.propTypes = {
   points: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   onDoubleClick: PropTypes.func.isRequired,
 }
+
+export default pure(Edge)

@@ -20,13 +20,14 @@ class HandlersMap {
    * If el is not in the map - create new elHandler, add to map and return it.
    */
   groupedHandler(el) {
-    if (!this.handler) return () => this.handler
-    const elHandler = this.map.get(el)
+    const { handler, map } = this
+    if (!handler) return () => handler
+    const elHandler = map.get(el)
     if (elHandler) debugHandlersMap(`found "${handler && handler.name}" for`, el)
     if (elHandler) return elHandler
-    const createdElHandler = (...args) => this.handler(el, ...args)
-    this.map.set(el, createdElHandler)
-    debugHandlersMap(`added "${this.handler && this.handler.name}" for`, el)
+    const createdElHandler = (...args) => handler(el, ...args)
+    map.set(el, createdElHandler)
+    debugHandlersMap(`added "${handler && handler.name}" for`, el)
     return createdElHandler
   }
 
