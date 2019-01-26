@@ -3,11 +3,14 @@ import ReactMarkdown from 'react-markdown'
 import Debug from 'debug'
 import logChangedProps from '../../utils/log-changed-props'
 import './markdown-node.css'
+import { pure } from 'recompose'
 
 const debug = Debug('markdown-node')
+const PureReactMarkdown = pure(ReactMarkdown)
 
 export default class Node extends React.Component {
   componentDidUpdate(prevProps) {
+    debug('componentDidUpdate')
     if (debug.enabled) logChangedProps(this.props, prevProps, debug)
   }
 
@@ -27,7 +30,7 @@ export default class Node extends React.Component {
           onMouseUp={this.props.onMouseUp}
           onDoubleClick={this.props.onDoubleClick}
         >
-          <ReactMarkdown className='node-markdown-container' source={data.text}/>
+          <PureReactMarkdown className='node-markdown-container' source={data.text}/>
           <NodeTags tags={data.tags || []}/>
         </div>
         <NodeAttachments attachments={data.attachments}/>
