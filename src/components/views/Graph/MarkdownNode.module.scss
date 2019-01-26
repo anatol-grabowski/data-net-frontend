@@ -1,3 +1,35 @@
+.NodeWrapper {
+  position: absolute;
+  transform: translate(-50%, -50%);
+
+  .Node {
+    pointer-events: all;
+    display: inline-block;
+    white-space: pre;
+    font-size: 1.5rem;
+    border: solid black 2px;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 187, 0.9);
+    cursor: default;
+    user-select: none;
+    font: 14px 'Century Gothic', Futura, sans-serif;
+
+    & > div > :first-child {
+      margin-top: 0.0rem;
+    }
+
+    & > div > :last-child {
+      margin-bottom: 0.0rem;
+    }
+
+    &:hover {
+      border-width: 4px;
+      // transition: 50ms;
+    }
+  }
+}
+
 .node .node-tags {
   border-width: 1px-solid-black;
 }

@@ -1,42 +1,60 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import Debug from 'debug'
-import logChangedProps from '../../../utils/log-changed-props'
-import './markdown-node.css'
+import styles from './MarkdownNode.module.scss'
 import { pure } from 'recompose'
 
-const debug = Debug('markdown-node')
 const PureReactMarkdown = pure(ReactMarkdown)
+const preventDefault = evt => evt.preventDefault()
 
-export default class Node extends React.Component {
-  componentDidUpdate(prevProps) {
-    debug('componentDidUpdate')
-    if (debug.enabled) logChangedProps(this.props, prevProps, debug)
-  }
-
-  render() {
-    const data = this.props.node.data
-    return (
-      <div className="node-wrapper"
-        style={{
-          top: data.y + 'px',
-          left: data.x + 'px',
-        }}
+export default function Node(props) {
+  const {
+    coords,
+    text,
+    details,
+    tags,
+    attachments,
+    onMouseDown,
+    onMouseUp,
+    onDoubleClick,
+  } = props
+  const [x, y] = coords
+  return (
+    <div className={styles.NodeWrapper}
+      style={{
+        top: y + 'px',
+        left: x + 'px',
+      }}
+    >
+      <div className={styles.Node}
+        title={details}
+        onMouseDown={onMouseDown}
+        onContextMenu={preventDefault}
+        onMouseUp={onMouseUp}
+        onDoubleClick={onDoubleClick}
       >
-        <div className="node"
-          title={data.details}
-          onMouseDown={this.props.onMouseDown}
-          onContextMenu={evt => evt.preventDefault()}
-          onMouseUp={this.props.onMouseUp}
-          onDoubleClick={this.props.onDoubleClick}
-        >
-          <PureReactMarkdown className='node-markdown-container' source={data.text}/>
-          <NodeTags tags={data.tags || []}/>
-        </div>
-        <NodeAttachments attachments={data.attachments}/>
+        <PureReactMarkdown className='node-markdown-container' source={text}/>
+        <NodeTags tags={tags}/>
       </div>
-    )
-  }
+      <NodeAttachments attachments={attachments}/>
+    </div>
+  )
+}
+
+Node.defaultProps = {
+  tags: [],
+  attachments: [],
+}
+
+Node.propTypes = {
+  coords: PropTypes.arrayOf(PropTypes.number).isRequired,
+  text: PropTypes.string.isRequired,
+  details: PropTypes.string.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string),
+  attachments: PropTypes.arrayOf(PropTypes.object),
+  onMouseDown: PropTypes.func.isRequired,
+  onMouseUp: PropTypes.func.isRequired,
+  onDoubleClick: PropTypes.func.isRequired,
 }
 
 const NodeTags = ({tags}) => (

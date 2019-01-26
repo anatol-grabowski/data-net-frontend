@@ -8,7 +8,26 @@ class HandlersMap {
   constructor() {
     this.map = null
     this.handler = null
-    this.groupedHandler = null
+    this.groupedHandler = this.groupedHandler.bind(this)
+  }
+
+  /**
+   * This is a function that a parent calls to get a cached handler for each el.
+   * It takes an element and returns an elHandler for it
+   * If parent handler is null - return a function that returns null,
+   * so that the Parent can call it without error.
+   * If el is in the map - return the elHandler from the map.
+   * If el is not in the map - create new elHandler, add to map and return it.
+   */
+  groupedHandler(el) {
+    if (!this.handler) return () => this.handler
+    const elHandler = this.map.get(el)
+    if (elHandler) debugHandlersMap(`found "${handler && handler.name}" for`, el)
+    if (elHandler) return elHandler
+    const createdElHandler = (...args) => this.handler(el, ...args)
+    this.map.set(el, createdElHandler)
+    debugHandlersMap(`added "${this.handler && this.handler.name}" for`, el)
+    return createdElHandler
   }
 
   _reset(handler) {
@@ -17,26 +36,10 @@ class HandlersMap {
     debugHandlersMap(`reset "${handler && handler.name}"`)
   }
 
-  _updateMap(elements) {
-    const { map, handler } = this
-    elements.forEach(el => {
-      const isInMap = map.has(el)
-      if (isInMap) return
-      const elHandler = (...args) => handler(el, ...args)
-      map.set(el, elHandler)
-      debugHandlersMap('updated element', el)
-    })
-  }
-
-  update(handler, elements) {
+  update(handler) {
     const isHandlerChanged = handler !== this.handler
-    if (isHandlerChanged) this._reset(handler)
-    if (!handler) {
-      this.groupedHandler = () => handler
-      return
-    }
-    this.groupedHandler = el => this.map.get(el)
-    this._updateMap(elements)
+    if (!isHandlerChanged) return
+    this._reset(handler)
   }
 }
 
@@ -54,16 +57,11 @@ class HandlersMap {
  *       {items.map(item => <Item key={item.id} onEvent{onItemEvent(item)} {...item} />)}
  *     </div>
  *   )
- *   export default withGroupedEvents({ onItemEvent: 'items' })(Parent)
+ *   export default withGroupedEvents(['onItemEvent'])(List)
  * ```
  * Now `List` will emit `onItemEvent` with `item` in the first argument, then original `onEvent` arguments
  */
-const withGroupedEvents = (groupsMappings) => (Component) => {
-  // we use `{ handler: 'elements' }`  mappings and not `{ elements: [ 'handler' ] }`.
-  // That makes conflicting mappings,
-  // like `{ elements: ['handler'], 'items': ['handler', 'handler2'] }`, impossible
-  const handlersProps = Object.keys(groupsMappings)
-
+const withGroupedEvents = (handlersProps) => (Component) => {
   const createMaps = () => {
     const maps = {}
     handlersProps.forEach(handlerProp => {
@@ -72,17 +70,16 @@ const withGroupedEvents = (groupsMappings) => (Component) => {
     return maps
   }
 
-  const updateMaps = (props, maps) => {
+  const getGroupedHandlers = (props, maps) => {
     const groupedHandlers = {}
     handlersProps.forEach(handlerProp => {
       const handler = props[handlerProp]
-      const elementsProp = groupsMappings[handlerProp]
-      const elements = props[elementsProp]
       const map = maps[handlerProp]
-      map.update(handler, elements)
+      map.update(handler)
+      debug('updated', handlerProp, handler && handler.name)
       groupedHandlers[handlerProp] = map.groupedHandler
     })
-    debug('updateMaps', groupedHandlers)
+    debug('getGroupedHandlers', groupedHandlers)
     return groupedHandlers
   }
 
@@ -94,7 +91,7 @@ const withGroupedEvents = (groupsMappings) => (Component) => {
 
     render() {
       const { props, maps } = this
-      const groupedHandlers = updateMaps(props, maps)
+      const groupedHandlers = getGroupedHandlers(props, maps)
       return <Component {...props} {...groupedHandlers} />
     }
   }
