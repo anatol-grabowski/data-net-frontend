@@ -5,11 +5,8 @@ const standalone = process.env.REACT_APP_STANDALONE === 'true'
 if (standalone) console.log(`REACT_APP_STANDALONE=${standalone}`)
 else console.log(`REACT_APP_API_URL=${apiUrl}`)
 
-const getGraphName = () => window.location.pathname.substr(1) || '/'
-
 export default class GraphApi {
-  static async getGraph() {
-    const graphName = getGraphName()
+  static async getGraph(graphName) {
     if (standalone) {
       if (graphName.substr(0, 4) !== 'test') return makeDummyGraph()
       return genGraph(Number(graphName.substr(4) || 500))
@@ -23,8 +20,7 @@ export default class GraphApi {
     return graph
   }
 
-  static async saveGraph(graph) {
-    const graphName = getGraphName()
+  static async saveGraph(graph, graphName) {
     console.log('saving', graphName)
     const url = `${apiUrl}/graph/${encodeURIComponent(graphName)}`
     const response = await fetch(url, {
