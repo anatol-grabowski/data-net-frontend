@@ -1,7 +1,7 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
-import { Graph } from '../../components/views/Graph'
-import styles from '../stories.module.scss'
+import { Graph } from '../../../components/views/Graph'
+import styles from '../../stories.module.scss'
 
 const nodes = [
   {

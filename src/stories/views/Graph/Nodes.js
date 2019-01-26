@@ -1,8 +1,8 @@
 import React from 'react'
 import cx from 'classnames'
 import { action } from '@storybook/addon-actions'
-import { Nodes } from '../../components/views/Graph'
-import styles from '../stories.module.scss'
+import { Nodes } from '../../../components/views/Graph'
+import styles from '../../stories.module.scss'
 
 const mouseActions = {
   onNodeMouseDown: action('node mouse down'),

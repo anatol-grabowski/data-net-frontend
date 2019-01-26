@@ -1,7 +1,7 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
-import { Edge, ArrowMarker } from '../../components/views/Graph'
-import styles from '../stories.module.scss'
+import { Edge, ArrowMarker } from '../../../components/views/Graph'
+import styles from '../../stories.module.scss'
 
 const edges = [
   {

@@ -76,10 +76,6 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <DivWithPanAndZoom/>
-        <span className='test-offset'>
-          slf
-        </span>
         <div className='graph-container'
           onKeyDown={this.handleKeyDown}
           tabIndex="0"
@@ -91,9 +87,3 @@ export default class App extends React.Component {
     )
   }
 }
-
-const Div = () => (<div className='test-offset'>
-  some text to add offsets and see<br/>
-  if render area still calculates positions correctly and the content stays withing the container
-</div>)
-const DivWithPanAndZoom = withPanAndZoom(Div)

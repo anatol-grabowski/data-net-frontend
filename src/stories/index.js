@@ -1,1 +1,2 @@
-import './Graph'
+import './views/Graph'
+import './hocs'
