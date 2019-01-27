@@ -6,6 +6,7 @@ import { pure } from 'recompose'
 function Edge(props) {
   const {
     points,
+    onMouseDown,
     onDoubleClick,
   } = props
   const [from, to] = points
@@ -16,6 +17,7 @@ function Edge(props) {
       x2={to[0]}
       y2={to[1]}
       onDoubleClick={onDoubleClick}
+      onMouseDown={onMouseDown}
       markerEnd="url(#arrow)"
     />
   )
@@ -24,6 +26,7 @@ function Edge(props) {
 Edge.propTypes = {
   points: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   onDoubleClick: PropTypes.func.isRequired,
+  onMouseDown: PropTypes.func.isRequired,
 }
 
 export default pure(Edge)

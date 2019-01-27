@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import Debug from 'debug'
 import { Graph as GraphView } from '../../views/Graph'
-import withDrag from '../../hocs/with-drag'
 import styles from './GraphArea.module.scss'
 
 const debug = Debug('GraphArea')
@@ -15,13 +14,7 @@ const mouseButton = {
   FIFTH: 4, // Fifth button, typically the Browser Forward button
 }
 
-const convertNodeMouseDownEventToDragStart = (node, evt) => {
-  if (evt.button !== 0) return
-  evt.stopPropagation()
-  return {x: evt.clientX, y: evt.clientY, payload: node}
-}
-
-const Graph = GraphView// = withDrag(GraphView, 'onNodeMouseDown', convertNodeMouseDownEventToDragStart)
+const Graph = GraphView
 
 export default class GraphArea extends React.Component {
   constructor(props) {
@@ -29,174 +22,207 @@ export default class GraphArea extends React.Component {
     this.state = {
       initialScale: 0.5,
     }
-    this.componentRef = React.createRef()
+    this.isCreatingEdge = false
+    this.isDraggingNode = false
+    this.node = null
   }
 
   handleGetTransformFunctions = transformFunctions => {
     this.setState({transformFunctions})
   }
 
-  handleNodeDrag = event => {
-    const delta = this.state.transformFunctions.scaleScreenToWorld([event.deltaX, event.deltaY])
-    const node = event.payload
-    node.data.x += delta[0]
-    node.data.y += delta[1]
-    this.setState()
-  }
-
-  handleNodeCreate = event => {
-    const p = this.state.transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
-    const data = {
-      text: 'aaa',
-      x: p[0],
-      y: p[1],
-    }
-    const graph = this.props.graph
-    const node = graph.node(data)
-    this.setState({graph})
-    this.props.onNodeCreate && this.props.onNodeCreate(node)
-  }
-
-  handleStartConnecting = (node, event) => {
-    if (event.button !== 2) return
-    event.stopPropagation()
-    const rect = this.componentRef.current.getBoundingClientRect()
-    this.setState({
-      connecting: {
-        from: node,
-        startX: event.clientX - rect.left,
-        startY: event.clientY - rect.top,
-        endX: event.clientX - rect.left,
-        endY: event.clientY - rect.top,
-      }
-    })
-  }
-
-  handleEndConnecting = (node) => {
-    if (node === this.state.connecting.from) return
-    this.props.graph.edge(this.state.connecting.from, node)
-  }
-
-  handleMoveConnecting = event => {
-    const rect = this.componentRef.current.getBoundingClientRect()
-    this.setState({
-      connecting: {
-        ...this.state.connecting,
-        endX: event.clientX - rect.left,
-        endY: event.clientY - rect.top,
-      }
-    })
-  }
-
-  handleCancelConnecting = () => {
-    this.setState({connecting: null})
-  }
-
-  edgeCreateBegin(node, pos) {
-    debug('start new edge', node.id)
+  createEdgeBegin(node, pos) {
+    debug('create edge begin', node, pos)
     this.isCreatingEdge = true
-    const newEdge = {
-      from: node,
-      points: [node.coords, pos],
-      id: null,
-    }
-    this.setState({ newEdge })
+    this.node = node
+    const { onAddEdgeBegin } = this.props
+    onAddEdgeBegin(node.id, pos)
   }
 
-  edgeCreateMove(pos) {
-    debug('move new edge', pos)
-    const newEdge = {
-      ...this.state.newEdge,
-      points: [this.state.newEdge.points[0], pos],
-    }
-    this.setState({ newEdge })
+  createEdgeMove(pos) {
+    debug('create edge move', pos)
+    const { onAddEdgeMove } = this.props
+    onAddEdgeMove(this.node.id, pos)
   }
 
-  edgeCreateEnd(node) {
-    debug('end new edge', node.id)
+  createEdgeEnd(node) {
+    debug('create edge end', node.id)
     this.isCreatingEdge = false
+    const { onAddEdgeEnd } = this.props
+    onAddEdgeEnd(this.node.id, node.id)
   }
 
-  edgeCreateCancel() {
-    debug('cancel new edge')
+  createEdgeCancel() {
+    debug('create edge cancel')
     this.isCreatingEdge = false
+    const { onAddEdgeCancel } = this.props
+    onAddEdgeCancel()
+  }
+
+  createNode(pos) {
+    debug('create node', pos)
+    const { onAddNode } = this.props
+    onAddNode(pos)
+  }
+
+  dragNodeBegin(node, pos) {
+    debug('drag node begin', node.id, pos)
+    this.isDraggingNode = true
+    this.node = node
+    const { onDragNodeBegin } = this.props
+    onDragNodeBegin(node.id, pos)
+  }
+
+  dragNodeMove(pos) {
+    debug('drag node move', pos)
+    const { onDragNodeMove } = this.props
+    onDragNodeMove(this.node.id, pos)
+  }
+
+  dragNodeEnd(pos) {
+    debug('drag node end', pos)
+    this.isDraggingNode = false
+    const { onDragNodeEnd } = this.props
+    onDragNodeEnd(this.node.id, pos)
+  }
+
+  editNode(node) {
+    debug('edit node', node.id)
+    const { onEditNode } = this.props
+    onEditNode(node.id)
+  }
+
+  editEdge(edge) {
+    debug('edit edge', edge.id)
+    const { onEditEdge } = this.props
+    onEditEdge(edge.id)
+  }
+
+  removeNode(node) {
+    debug('remove node', node.id)
+    const { onRemoveNode } = this.props
+    onRemoveNode(node.id)
+  }
+
+  removeEdge(edge) {
+    debug('remove edge', edge.id)
+    const { onRemoveEdge } = this.props
+    onRemoveEdge(edge.id)
   }
 
 
   handleMouseMove = (event) => {
     const { transformFunctions } = this.state
     const pos = transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
-    if (this.isCreatingEdge) this.edgeCreateMove(pos)
+    if (this.isCreatingEdge) this.createEdgeMove(pos)
+    if (this.isDraggingNode) this.dragNodeMove(pos)
   }
 
   handleMouseUp = () => {
-    if (this.isCreatingEdge) this.edgeCreateCancel()
+    const { transformFunctions } = this.state
+    const pos = transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
+    if (this.isCreatingEdge) this.createEdgeCancel()
+    if (this.isDraggingNode) this.dragNodeEnd(pos)
+  }
+
+  handleDoubleClick = (event) => {
+    const { transformFunctions } = this.state
+    const pos = transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
+    this.createNode(pos)
   }
 
   handleNodeMouseDown = (node, event) => {
+    event.stopPropagation()
     if (event.button === mouseButton.SECONDARY) {
-      event.stopPropagation()
       const { transformFunctions } = this.state
       const pos = transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
-      this.edgeCreateBegin(node, pos)
+      this.createEdgeBegin(node, pos)
+    }
+    if (event.button === mouseButton.MAIN) {
+      const { transformFunctions } = this.state
+      const pos = transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
+      this.dragNodeBegin(node, pos)
+    }
+    if (event.button === mouseButton.AUXILIARY) {
+      this.removeNode(node)
     }
     const { onNodeMouseDown } = this.props
     onNodeMouseDown && onNodeMouseDown(node, event)
   }
 
   handleNodeMouseUp = (node, event) => {
-    if (this.isCreatingEdge) this.edgeCreateEnd(node)
+    if (this.isCreatingEdge) {
+      if (this.node !== node) this.createEdgeEnd(node)
+      else this.createEdgeCancel()
+    }
     const { onNodeMouseUp } = this.props
     onNodeMouseUp && onNodeMouseUp(node, event)
   }
 
+  handleEdgeMouseDown = (edge, event) => {
+    event.stopPropagation()
+    if (event.button === mouseButton.AUXILIARY) {
+      this.removeEdge(edge)
+    }
+  }
+
+  handleNodeDoubleClick = (node, event) => {
+    event.stopPropagation()
+    this.editNode(node)
+  }
+
+  handleEdgeDoubleClick = (edge, event) => {
+    event.stopPropagation()
+    this.editEdge(edge)
+  }
+
   render() {
-    const { graph, ...graphProps } = this.props
-    const { nodes, edges: existingEdges } = graph
-    const { initialScale, newEdge } = this.state
-    const { isCreatingEdge } = this
-    const edges = isCreatingEdge ? existingEdges.concat([newEdge]) : existingEdges
+    const { graph } = this.props
+    const { nodes, edges } = graph
+    const { initialScale } = this.state
     const {
       handleMouseMove,
       handleMouseUp,
+      handleDoubleClick,
       handleNodeMouseDown,
       handleNodeMouseUp,
+      handleNodeDoubleClick,
+      handleEdgeMouseDown,
+      handleEdgeDoubleClick,
+      handleGetTransformFunctions,
     } = this
     return <div className={styles.GraphArea}
-      ref={this.componentRef}
-      onDoubleClick={this.handleNodeCreate}
-      onMouseDown={this.handleMouseDown}
+      onDoubleClick={handleDoubleClick}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
       <Graph
+        scale={initialScale}
+        onGetTransformFunctions={handleGetTransformFunctions}
         nodes={nodes}
         edges={edges}
-        {...graphProps}
-        scale={initialScale}
-        onGetTransformFunctions={this.handleGetTransformFunctions}
-        onDrag={this.handleNodeDrag}
         onNodeMouseDown={handleNodeMouseDown}
         onNodeMouseUp={handleNodeMouseUp}
+        onNodeDoubleClick={handleNodeDoubleClick}
+        onEdgeMouseDown={handleEdgeMouseDown}
+        onEdgeDoubleClick={handleEdgeDoubleClick}
       />
-      {
-        this.state.connecting && <svg className='connecting-container'>
-          <line className='connecting-line'
-            x1={this.state.connecting.startX}
-            y1={this.state.connecting.startY}
-            x2={this.state.connecting.endX}
-            y2={this.state.connecting.endY}
-          />
-        </svg>
-      }
     </div>
   }
 }
 
 GraphArea.propTypes = {
   graph: PropTypes.object.isRequired,
-  // onEdgeCreateBegin: PropTypes.func.isRequired,
-  // onEdgeCreateMove: PropTypes.func.isRequired,
-  // onEdgeCreateCancel: PropTypes.func.isRequired,
-  // onEdgeCreateEnd: PropTypes.func.isRequired,
+  onAddNode: PropTypes.func.isRequired,
+  onAddEdgeBegin: PropTypes.func.isRequired,
+  onAddEdgeMove: PropTypes.func.isRequired,
+  onAddEdgeCancel: PropTypes.func.isRequired,
+  onAddEdgeEnd: PropTypes.func.isRequired,
+  onRemoveNode: PropTypes.func.isRequired,
+  onRemoveEdge: PropTypes.func.isRequired,
+  onEditNode: PropTypes.func.isRequired,
+  onEditEdge: PropTypes.func.isRequired,
+  onDragNodeBegin: PropTypes.func.isRequired,
+  onDragNodeMove: PropTypes.func.isRequired,
+  onDragNodeEnd: PropTypes.func.isRequired,
 }

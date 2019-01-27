@@ -12,12 +12,14 @@ function Graph(props) {
     onNodeMouseDown,
     onNodeMouseUp,
     onNodeDoubleClick,
+    onEdgeMouseDown,
     onEdgeDoubleClick,
   } = props
   return (
     <div className={styles.Graph}>
       <Edges
         edges={edges}
+        onEdgeMouseDown={onEdgeMouseDown}
         onEdgeDoubleClick={onEdgeDoubleClick}
       />
       <Nodes
@@ -40,6 +42,7 @@ Graph.propTypes = {
   onNodeMouseDown: PropTypes.func.isRequired,
   onNodeMouseUp: PropTypes.func,
   onNodeDoubleClick: PropTypes.func.isRequired,
+  onEdgeMouseDown: PropTypes.func.isRequired,
   onEdgeDoubleClick: PropTypes.func.isRequired,
 }
 

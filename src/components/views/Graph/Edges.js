@@ -6,7 +6,11 @@ import ArrowMarker from './ArrowMarker'
 import styles from './Edges.module.scss'
 
 function Edges(props) {
-  const {edges, onEdgeDoubleClick} = props
+  const {
+    edges,
+    onEdgeMouseDown,
+    onEdgeDoubleClick
+  } = props
   return (
     <svg className={styles.Edges}>
       <defs>
@@ -18,6 +22,7 @@ function Edges(props) {
             <Edge
               key={edge.id}
               {...edge}
+              onMouseDown={onEdgeMouseDown(edge)}
               onDoubleClick={onEdgeDoubleClick(edge)}
             />
           ))
@@ -29,10 +34,12 @@ function Edges(props) {
 
 const EdgesWithGroupedHandlers = withGroupedEvents([
   'onEdgeDoubleClick',
+  'onEdgeMouseDown',
 ])(Edges)
 
 EdgesWithGroupedHandlers.propTypes = {
   onEdgeDoubleClick: PropTypes.func.isRequired,
+  onEdgeMouseDown: PropTypes.func.isRequired,
 }
 
 export default EdgesWithGroupedHandlers
