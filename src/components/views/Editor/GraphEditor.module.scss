@@ -1,0 +1,15 @@
+.GraphEditor {
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  .Graph {
+    border: blue;
+    width: 100%;
+  }
+
+  .Edit {
+    width: 200px;
+    height: 100%;
+  }
+}

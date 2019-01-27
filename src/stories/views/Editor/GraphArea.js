@@ -1,7 +1,7 @@
 import React from 'react'
-import { GraphArea } from '../../../components/containers/Graph'
+import { GraphArea } from '../../../components/views/Editor'
 import styles from '../../stories.module.scss'
-import { action, decorate } from '@storybook/addon-actions';
+import { action, decorate } from '@storybook/addon-actions'
 
 const nodes = [
   {
