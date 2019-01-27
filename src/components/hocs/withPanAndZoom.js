@@ -1,5 +1,5 @@
 import React from 'react'
-import './with-pan-and-zoom.css'
+import styles from './withPanAndZoom.module.scss'
 
 export default function withPanAndZoom(Child) {
   return class PanAndZoom extends React.Component {
@@ -183,7 +183,7 @@ export default function withPanAndZoom(Child) {
       const scale = this.state.scale
       const translate = this.state.translate
       return (
-        <div className='with-pan-and-zoom-interact'
+        <div className={styles.WithPanAndZoom}
           ref={this.graphRef}
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.state.translating && this.handleMouseMove}
@@ -195,7 +195,7 @@ export default function withPanAndZoom(Child) {
           onTouchEnd={this.handleTouchEnd}
           onTouchCancel={this.handleTouchEnd}
         >
-          <div className='with-pan-and-zoom-transform'
+          <div className={styles.TransformedContentWrapper}
             style={{
               transform: `translate(${translate[0]}px,${translate[1]}px) scale(${scale})`,
               transformOrigin: '0px 0px',

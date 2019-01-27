@@ -1,5 +1,5 @@
 import React from 'react'
-import Graph from './graph-render-area'
+import Graph from './GraphArea'
 import Dropzone from 'react-dropzone'
 import { uploadFile, makeDownloadLink } from '../../../api/upload.api'
 import './graph-render-and-edit-area.css'

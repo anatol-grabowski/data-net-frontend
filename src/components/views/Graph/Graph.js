@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Nodes from './Nodes'
 import Edges from './Edges'
-import withPanAndZoom from '../../hocs/with-pan-and-zoom'
+import withPanAndZoom from '../../hocs/withPanAndZoom'
 import styles from './Graph.module.scss'
 
 function Graph(props) {
@@ -30,11 +30,15 @@ function Graph(props) {
   )
 }
 
+Graph.defaultProps = {
+  onNodeMouseUp: null,
+}
+
 Graph.propTypes = {
   nodes: PropTypes.arrayOf(PropTypes.object).isRequired,
   edges: PropTypes.arrayOf(PropTypes.object).isRequired,
   onNodeMouseDown: PropTypes.func.isRequired,
-  onNodeMouseUp: PropTypes.func.isRequired,
+  onNodeMouseUp: PropTypes.func,
   onNodeDoubleClick: PropTypes.func.isRequired,
   onEdgeDoubleClick: PropTypes.func.isRequired,
 }

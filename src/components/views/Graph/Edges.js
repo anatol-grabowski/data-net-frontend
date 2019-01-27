@@ -31,4 +31,8 @@ const EdgesWithGroupedHandlers = withGroupedEvents([
   'onEdgeDoubleClick',
 ])(Edges)
 
+EdgesWithGroupedHandlers.propTypes = {
+  onEdgeDoubleClick: PropTypes.func.isRequired,
+}
+
 export default EdgesWithGroupedHandlers

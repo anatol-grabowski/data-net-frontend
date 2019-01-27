@@ -1,5 +1,5 @@
 import React from 'react'
-import withPanAndZoom from '../../components/hocs/with-pan-and-zoom'
+import withPanAndZoom from '../../components/hocs/withPanAndZoom'
 import styles from '../stories.module.scss'
 
 function Div() {

@@ -28,11 +28,17 @@ function Nodes(props) {
   )
 }
 
+Nodes.defaultProps = {
+  onNodeMouseDown: null,
+  onNodeMouseUp: null,
+  onNodeDoubleClick: null,
+}
+
 Nodes.propTypes = {
   nodes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onNodeMouseDown: PropTypes.func.isRequired,
-  onNodeMouseUp: PropTypes.func.isRequired,
-  onNodeDoubleClick: PropTypes.func.isRequired,
+  onNodeMouseDown: PropTypes.func,
+  onNodeMouseUp: PropTypes.func,
+  onNodeDoubleClick: PropTypes.func,
 }
 
 const NodesWithGroupedHandlers = withGroupedEvents([
@@ -40,11 +46,5 @@ const NodesWithGroupedHandlers = withGroupedEvents([
   'onNodeMouseUp',
   'onNodeDoubleClick',
 ])(Nodes)
-
-NodesWithGroupedHandlers.propTypes = {
-  onNodeMouseDown: PropTypes.func.isRequired,
-  onNodeMouseUp: PropTypes.func.isRequired,
-  onNodeDoubleClick: PropTypes.func.isRequired,
-}
 
 export default NodesWithGroupedHandlers
