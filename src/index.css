@@ -16,6 +16,13 @@ body {
   position: relative;
 }
 
+.graph-container:focus-within {
+  outline-color: #f8bca5;
+  outline-style: solid;
+  outline-offset: -2px;
+  outline-width: 2px;
+}
+
 .graph-container .graph-info-text {
   position: absolute;
   overflow: hidden;
