@@ -10,11 +10,17 @@ body {
 }
 
 .graph-container {
-  width: 90vw;
-  height: 90vh;
+  width: 100vw;
+  height: 100vh;
   display: inline-block;
-  border: 1px solid blue;
   position: relative;
+}
+
+.graph-container:focus-within {
+  outline-color: #f8bca5;
+  outline-style: solid;
+  outline-offset: -2px;
+  outline-width: 2px;
 }
 
 .graph-container .graph-info-text {
@@ -28,43 +34,12 @@ body {
   pointer-events: none;
 }
 
-.graph-render-area {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  top: 0;
-  left: 0;
-}
-
-.graph-render-and-edit-area {
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-
-.graph-edit-area {
-  width: 200px;
-  border: 2px dashed black;
-}
+html { overflow: hidden; width: 100%; }
+body { height: 100%; position: fixed; overflow-y: hidden; }
 
 @media only screen and (max-width: 700px) {
   .graph-edit-area { display: none; }
-  .test-offset { display: none; }
   .graph-container { border: none; width: 100vw; height: 100vh; }
-  .graph-info-text { display: none; }
   html { overflow: hidden; width: 100%; }
   body { height: 100%; position: fixed; overflow-y: hidden; }
-}
-
-.connecting-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-  fill: #ffb;
-  stroke: black;
-  stroke-width: 3px;
 }
