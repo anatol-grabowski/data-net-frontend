@@ -9,6 +9,11 @@ export default class EditArea extends React.Component {
     onEditUpdate(id, event.target.value)
   }
 
+  handleRemove = () => {
+    const { onRemove, id } = this.props
+    onRemove(id)
+  }
+
   render() {
     const {
       id,
@@ -16,18 +21,25 @@ export default class EditArea extends React.Component {
       text,
       attachments,
     } = this.props
+    const displayedCoords = coords.map(c => c.toFixed(1)).join(' ')
     const {
       handleTextChange,
+      handleRemove,
     } = this
     return (
       <div className={styles.EditArea}>
         <div>{`node id: ${id}`}</div><br/>
-        <div>{`node xy: ${coords.join(' ')}`}</div><br/>
+        <div>{`node xy: ${displayedCoords}`}</div><br/>
         <div>Text:</div>
         <textarea
           rows={10}
           value={text}
           onChange={handleTextChange}
+        />
+        <input
+          type='button'
+          value='remove'
+          onClick={handleRemove}
         />
         <div>Attachments:</div>
         <Attachments
@@ -48,4 +60,5 @@ EditArea.propTypes = {
   text: PropTypes.string.isRequired,
   attachments: PropTypes.arrayOf(PropTypes.object).isRequired,
   onEditUpdate: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
 }

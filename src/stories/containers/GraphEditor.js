@@ -1,6 +1,6 @@
 import React from 'react'
-import { GraphEditor } from '../../../components/views/Editor'
-import styles from '../../stories.module.scss'
+import { GraphEditor } from '../../components/containers'
+import styles from '../stories.module.scss'
 import { action } from '@storybook/addon-actions'
 
 import { Graph } from 'data-net'

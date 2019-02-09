@@ -1,8 +1,7 @@
 import React from 'react'
 import './index.css'
 import GraphApi from './api/graph.api'
-import Graph from './components/containers/Graph/graph-render-and-edit-area'
-import withPanAndZoom from './components/hocs/with-pan-and-zoom'
+import { GraphEditor } from './components/containers'
 
 const helpText = `
 LMB double click on empty space - create node
@@ -81,7 +80,7 @@ export default class App extends React.Component {
           tabIndex="0"
         >
           <div className='graph-info-text'>{this.state.backgroundText}</div>
-          {this.state.graph && <Graph graph={this.state.graph}/>}
+          {this.state.graph && <GraphEditor graph={this.state.graph}/>}
         </div>
       </div>
     )

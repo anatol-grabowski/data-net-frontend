@@ -1,88 +1,86 @@
 import Debug from 'debug'
 import PropTypes from 'prop-types'
 import React from 'react'
-import GraphArea from './GraphArea'
-import EditArea from './EditArea'
+import GraphService from '../../services/graph-service'
+import GraphArea from '../views/Editor/GraphArea'
+import EditArea from '../views/Editor/EditArea'
 import styles from './GraphEditor.module.scss'
 
 const debug = Debug('GraphEditor')
 
-function getNodeForRender(node) {
-  const {
-    x,
-    y,
-    text,
-    details,
-  } = node.data
-  const nodeForRender = {
-    id: node.id,
-    coords: [x, y],
-    text,
-    details: details || '',
-    attachments: [],
-  }
-  return nodeForRender
-}
-
-function getEdgeForRender(edge) {
-  const from = [edge.from.data.x, edge.from.data.y]
-  const to = [edge.to.data.x, edge.to.data.y]
-  const edgeForRender = {
-    id: edge.id,
-    points: [from, to],
-  }
-  return edgeForRender
-}
-
-function getGraphForRender(graph) {
-  if (!graph) return { nodes: [], edges: [] }
-  const nodes = graph.nodes.map(n => getNodeForRender(n))
-  const edges = graph.edges.map(e => getEdgeForRender(e))
-  return { nodes, edges }
-}
-
 export default class GraphEditor extends React.Component {
   constructor(props) {
     super(props)
+    const { graph } = this.props
+    this.graphService = new GraphService(graph)
     this.state = {
-      graph: getGraphForRender(props.graph)
+      graphForRender: this.graphService.graphForRender,
+      editedNodeId: null,
     }
+  }
+
+  addingEdge(fromId, pos) {
+    const { graphForRender } = this.graphService
+    const from = graphForRender.nodes.find(n => n.id === fromId).coords
+    const newEdge = {
+      points: [from, pos],
+    }
+    const newGraphForRender = {
+      ...graphForRender,
+      edges: graphForRender.edges.concat([newEdge])
+    }
+    this.setState({ graphForRender: newGraphForRender })
+  }
+
+  movingNode(nodeId, pos) {
+    const { graphService } = this
+    const [x, y] = pos
+    graphService.updateNode(nodeId, { x, y })
+    this.setState({ graphForRender: graphService.graphForRender })
   }
 
   handleAddNode = (pos) => {
     debug('add node', pos)
+    const { graphService } = this
+    graphService.addNode(pos)
+    this.setState({ graphForRender: graphService.graphForRender })
   }
 
   handleAddEdgeBegin = (nodeId, pos) => {
     debug('add edge begin', nodeId, pos)
+    this.addingEdge(nodeId, pos)
   }
 
   handleAddEdgeMove = (nodeId, pos) => {
     debug('add edge move', nodeId, pos)
+    this.addingEdge(nodeId, pos)
   }
 
   handleAddEdgeCancel = () => {
     debug('add edge cancel')
+    const { graphService } = this
+    this.setState({ graphForRender: graphService.graphForRender })
   }
 
   handleAddEdgeEnd = (fromId, toId) => {
     debug('add edge end', fromId, toId)
+    const { graphService } = this
+    graphService.addEdge(fromId, toId)
+    this.setState({ graphForRender: graphService.graphForRender })
   }
 
   handleRemoveNode = (nodeId) => {
     debug('remove node', nodeId)
+    const { graphService } = this
+    graphService.removeNode(nodeId)
+    this.setState({ graphForRender: graphService.graphForRender })
   }
 
   handleRemoveEdge = (edgeId) => {
     debug('remove edge', edgeId)
-  }
-
-  handleEditNodeBegin = (nodeId) => {
-    debug('edit node begin', nodeId)
-  }
-
-  handleEditEdgeBegin = (edgeId) => {
-    debug('edit edge begin', edgeId)
+    const { graphService } = this
+    graphService.removeEdge(edgeId)
+    this.setState({ graphForRender: graphService.graphForRender })
   }
 
   handleDragNodeBegin = (nodeId) => {
@@ -91,20 +89,36 @@ export default class GraphEditor extends React.Component {
 
   handleDragNodeMove = (nodeId, pos) => {
     debug('drag node move', nodeId, pos)
+    this.movingNode(nodeId, pos)
   }
 
   handleDragNodeEnd = (nodeId, pos) => {
     debug('drag node end', nodeId, pos)
+    this.movingNode(nodeId, pos)
+  }
+
+  handleEditNodeBegin = (nodeId) => {
+    debug('edit node begin', nodeId)
+    this.setState({ editedNodeId: nodeId })
+  }
+
+  handleEditEdgeBegin = (edgeId) => {
+    debug('edit edge begin', edgeId)
   }
 
   handleEditNodeUpdate = (nodeId, text) => {
     debug('edit node update', nodeId, text)
+    const { graphService } = this
+    graphService.updateNode(nodeId, { text })
+    this.setState({ graphForRender: graphService.graphForRender })
   }
 
   render() {
     const {
-      graph,
+      graphForRender,
+      editedNodeId,
     } = this.state
+    const editedNode = graphForRender.nodes.find(n => n.id === editedNodeId)
 
     const {
       handleAddNode,
@@ -125,7 +139,7 @@ export default class GraphEditor extends React.Component {
       <div className={styles.GraphEditor}>
         <div className={styles.Graph}>
           <GraphArea
-            graph={graph}
+            graph={graphForRender}
             onAddNode={handleAddNode}
             onAddEdgeBegin={handleAddEdgeBegin}
             onAddEdgeMove={handleAddEdgeMove}
@@ -140,14 +154,15 @@ export default class GraphEditor extends React.Component {
             onDragNodeEnd={handleDragNodeEnd}
           />
         </div>
-        <div className={styles.Edit}>
-          {graph.nodes[0] && (
+        {editedNode && (
+          <div className={styles.Edit}>
             <EditArea
-              {...graph.nodes[0]}
+              {...editedNode}
               onEditUpdate={handleEditNodeUpdate}
+              onRemove={handleRemoveNode}
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     )
   }

@@ -20,20 +20,25 @@ export default function Node(props) {
   } = props
   const [x, y] = coords
   return (
-    <div className={styles.NodeWrapper}
+    <div
+      className={styles.NodeWrapper}
       style={{
         top: y + 'px',
         left: x + 'px',
       }}
     >
-      <div className={styles.Node}
+      <div
+        className={styles.Node}
         title={details}
         onMouseDown={onMouseDown}
         onContextMenu={preventDefault}
         onMouseUp={onMouseUp}
         onDoubleClick={onDoubleClick}
       >
-        <PureReactMarkdown className='node-markdown-container' source={text}/>
+        <PureReactMarkdown
+          className={styles.MarkdownWrapper}
+          source={text}
+        />
         <NodeTags tags={tags}/>
       </div>
       <NodeAttachments attachments={attachments}/>

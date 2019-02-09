@@ -25,6 +25,7 @@ export default class GraphArea extends React.Component {
     this.isCreatingEdge = false
     this.isDraggingNode = false
     this.node = null
+    this.dragOffset0 = null
   }
 
   handleGetTransformFunctions = transformFunctions => {
@@ -66,24 +67,33 @@ export default class GraphArea extends React.Component {
   }
 
   dragNodeBegin(node, pos) {
-    debug('drag node begin', node.id, pos)
+    debug('drag node begin', node.id)
     this.isDraggingNode = true
     this.node = node
+    const [x, y] = pos
+    const [nodeX, nodeY] = node.coords
+    this.dragOffset0 = [x - nodeX, y - nodeY]
     const { onDragNodeBegin } = this.props
-    onDragNodeBegin(node.id, pos)
+    onDragNodeBegin(node.id)
   }
 
   dragNodeMove(pos) {
     debug('drag node move', pos)
+    const [x, y] = pos
+    const [offsetX, offsetY] = this.dragOffset0
+    const nodePos = [x - offsetX, y - offsetY]
     const { onDragNodeMove } = this.props
-    onDragNodeMove(this.node.id, pos)
+    onDragNodeMove(this.node.id, nodePos)
   }
 
   dragNodeEnd(pos) {
     debug('drag node end', pos)
     this.isDraggingNode = false
+    const [x, y] = pos
+    const [offsetX, offsetY] = this.dragOffset0
+    const nodePos = [x - offsetX, y - offsetY]
     const { onDragNodeEnd } = this.props
-    onDragNodeEnd(this.node.id, pos)
+    onDragNodeEnd(this.node.id, nodePos)
   }
 
   editNode(node) {
@@ -118,7 +128,7 @@ export default class GraphArea extends React.Component {
     if (this.isDraggingNode) this.dragNodeMove(pos)
   }
 
-  handleMouseUp = () => {
+  handleMouseUp = (event) => {
     const { transformFunctions } = this.state
     const pos = transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
     if (this.isCreatingEdge) this.createEdgeCancel()

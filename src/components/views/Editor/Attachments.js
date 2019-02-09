@@ -1,4 +1,5 @@
 import React from 'react'
+import { makeDownloadLink } from '../../../api/upload.api'
 
 export default function Attachments(props) {
   const {attachments = [], onAttachmentRemove} = props
