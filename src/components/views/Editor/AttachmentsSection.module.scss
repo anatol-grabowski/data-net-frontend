@@ -1,0 +1,10 @@
+.AttachmentsSection {
+  .Dropzone {
+    border: 2px dashed black;
+    border-radius: 0.5rem;
+
+    input {
+      display: none;
+    }
+  }
+}

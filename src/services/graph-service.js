@@ -1,16 +1,20 @@
+import EventEmitter from 'events'
+import { uploadFile } from '../api/upload.api'
+
 function getNodeForRender(node) {
   const {
     x,
     y,
     text,
     details,
+    attachments,
   } = node.data
   const nodeForRender = {
     id: node.id,
     coords: [x, y],
     text,
     details: details || '',
-    attachments: [],
+    attachments: attachments || [],
   }
   return nodeForRender
 }
@@ -44,10 +48,12 @@ class GraphService {
   constructor(graph) {
     this.graph = graph
     this.graphForRender = getGraphForRender(graph)
+    this.events = new EventEmitter()
   }
 
   updateGraphForRender() {
     this.graphForRender = getGraphForRender(this.graph)
+    this.events.emit('update')
   }
 
   addNode(pos) {
@@ -56,8 +62,9 @@ class GraphService {
       y: pos[1],
       text: 'aaa',
     }
-    this.graph.node(data)
+    const { id } = this.graph.node(data)
     this.updateGraphForRender()
+    return id
   }
 
   addEdge(fromId, toId) {
@@ -85,6 +92,30 @@ class GraphService {
       ...node.data,
       ...updates
     }
+    this.updateGraphForRender()
+  }
+
+  async addAttachments(nodeId, files) {
+    const node = findNodeById(this.graph, nodeId)
+    const upload = async (file) => {
+      const uploadResponse = await uploadFile(file)
+      const newAttachments = uploadResponse.metadatas.map(met => {
+        const attachment = {
+          filepath: met.path_display,
+        }
+        return attachment
+      })
+      if (!node.data.attachments) node.data.attachments = []
+      node.data.attachments = node.data.attachments.concat(newAttachments)
+      this.updateGraphForRender()
+    }
+    const uploadPromises = files.map(f => upload(f))
+    await Promise.all(uploadPromises)
+  }
+
+  removeAttachment(nodeId, attachmentIndex) {
+    const node = findNodeById(this.graph, nodeId)
+    node.data.attachments.splice(attachmentIndex, 1)
     this.updateGraphForRender()
   }
 }

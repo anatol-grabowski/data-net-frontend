@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import styles from './Node.module.scss'
 import { pure } from 'recompose'
+import { PaperclipIcon } from '../Primitives'
+import styles from './Node.module.scss'
 
 const PureReactMarkdown = pure(ReactMarkdown)
 const preventDefault = evt => evt.preventDefault()
@@ -41,7 +42,7 @@ export default function Node(props) {
         />
         <NodeTags tags={tags}/>
       </div>
-      <NodeAttachments attachments={attachments}/>
+      {attachments.length > 0 && <PaperclipIcon /> }
     </div>
   )
 }
@@ -70,11 +71,4 @@ const NodeTags = ({tags}) => (
 
 const NodeTag = ({text}) => (
   <div className='node-tag'>{text}</div>
-)
-
-const NodeAttachments = ({attachments = []}) => (
-  attachments.length > 0 && <div className='node-attachments'>
-    <div className='top'></div>
-    <div className='bottom'></div>
-  </div>
 )

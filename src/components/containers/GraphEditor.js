@@ -19,6 +19,15 @@ export default class GraphEditor extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.graphService.events.on('update', this.handleGraphUpdate)
+  }
+
+  handleGraphUpdate = () => {
+    debug('graph update')
+    this.setState({ graphForRender: this.graphService.graphForRender })
+  }
+
   addingEdge(fromId, pos) {
     const { graphForRender } = this.graphService
     const from = graphForRender.nodes.find(n => n.id === fromId).coords
@@ -33,17 +42,14 @@ export default class GraphEditor extends React.Component {
   }
 
   movingNode(nodeId, pos) {
-    const { graphService } = this
     const [x, y] = pos
-    graphService.updateNode(nodeId, { x, y })
-    this.setState({ graphForRender: graphService.graphForRender })
+    this.graphService.updateNode(nodeId, { x, y })
   }
 
   handleAddNode = (pos) => {
     debug('add node', pos)
-    const { graphService } = this
-    graphService.addNode(pos)
-    this.setState({ graphForRender: graphService.graphForRender })
+    const nodeId = this.graphService.addNode(pos)
+    this.setState({ editedNodeId: nodeId })
   }
 
   handleAddEdgeBegin = (nodeId, pos) => {
@@ -58,29 +64,22 @@ export default class GraphEditor extends React.Component {
 
   handleAddEdgeCancel = () => {
     debug('add edge cancel')
-    const { graphService } = this
-    this.setState({ graphForRender: graphService.graphForRender })
+    this.setState({ graphForRender: this.graphService.graphForRender })
   }
 
   handleAddEdgeEnd = (fromId, toId) => {
     debug('add edge end', fromId, toId)
-    const { graphService } = this
-    graphService.addEdge(fromId, toId)
-    this.setState({ graphForRender: graphService.graphForRender })
+    this.graphService.addEdge(fromId, toId)
   }
 
   handleRemoveNode = (nodeId) => {
     debug('remove node', nodeId)
-    const { graphService } = this
-    graphService.removeNode(nodeId)
-    this.setState({ graphForRender: graphService.graphForRender })
+    this.graphService.removeNode(nodeId)
   }
 
   handleRemoveEdge = (edgeId) => {
     debug('remove edge', edgeId)
-    const { graphService } = this
-    graphService.removeEdge(edgeId)
-    this.setState({ graphForRender: graphService.graphForRender })
+    this.graphService.removeEdge(edgeId)
   }
 
   handleDragNodeBegin = (nodeId) => {
@@ -106,11 +105,19 @@ export default class GraphEditor extends React.Component {
     debug('edit edge begin', edgeId)
   }
 
-  handleEditNodeUpdate = (nodeId, text) => {
+  handleNodeTextUpdate = (nodeId, text) => {
     debug('edit node update', nodeId, text)
-    const { graphService } = this
-    graphService.updateNode(nodeId, { text })
-    this.setState({ graphForRender: graphService.graphForRender })
+    this.graphService.updateNode(nodeId, { text })
+  }
+
+  handleRemoveAttachment = (nodeId, attachmentIndex) => {
+    debug('remove attachment', nodeId, attachmentIndex)
+    this.graphService.removeAttachment(nodeId, attachmentIndex)
+  }
+
+  handleUploadAttachments = async (nodeId, files) => {
+    debug('upload attachments', nodeId, files.length)
+    await this.graphService.addAttachments(nodeId, files)
   }
 
   render() {
@@ -133,7 +140,9 @@ export default class GraphEditor extends React.Component {
       handleDragNodeBegin,
       handleDragNodeMove,
       handleDragNodeEnd,
-      handleEditNodeUpdate,
+      handleNodeTextUpdate,
+      handleRemoveAttachment,
+      handleUploadAttachments,
     } = this
     return (
       <div className={styles.GraphEditor}>
@@ -158,12 +167,18 @@ export default class GraphEditor extends React.Component {
           <div className={styles.Edit}>
             <EditArea
               {...editedNode}
-              onEditUpdate={handleEditNodeUpdate}
+              onTextUpdate={handleNodeTextUpdate}
               onRemove={handleRemoveNode}
+              onRemoveAttachment={handleRemoveAttachment}
+              onUploadAttachments={handleUploadAttachments}
             />
           </div>
         )}
       </div>
     )
   }
+}
+
+GraphEditor.propTypes = {
+  graph: PropTypes.object.isRequired,
 }

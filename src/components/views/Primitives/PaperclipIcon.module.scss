@@ -1,0 +1,34 @@
+.Paperclip {
+  display: inline-block;
+  position: absolute;
+  top: -1.0rem;
+  right: -0.8rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  pointer-events: all;
+  transition: 40ms;
+
+  &:hover {
+    top: -1.2rem;
+    right: -1.0rem;
+    /* transform: translate(0.2rem,-0.2rem); */
+    transition: 100ms;
+  }
+
+  .Top,
+  .Bottom {
+    background-color: blue;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .Top {
+    mask-image: url(/icons/paper-clip-inner.svg), none;
+  }
+
+  .Bottom {
+    mask-image: url(/icons/paper-clip-outer.svg), none;
+    z-index: -1;
+  }
+}

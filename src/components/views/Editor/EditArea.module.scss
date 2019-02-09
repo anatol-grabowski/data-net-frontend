@@ -1,3 +1,11 @@
 .EditArea {
-  border: 2px dashed black;
+  border-left: 1px solid black;
+  height: 100%;
+  box-sizing: border-box;
+  background: #fdfdff;
+
+  .Text {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }

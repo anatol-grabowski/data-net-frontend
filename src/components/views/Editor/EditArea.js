@@ -1,17 +1,27 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import Attachments from './Attachments'
+import AttachmentsSection from './AttachmentsSection'
 import styles from './EditArea.module.scss'
 
 export default class EditArea extends React.Component {
   handleTextChange = (event) => {
-    const { onEditUpdate, id } = this.props
-    onEditUpdate(id, event.target.value)
+    const { onTextUpdate, id } = this.props
+    onTextUpdate(id, event.target.value)
   }
 
   handleRemove = () => {
     const { onRemove, id } = this.props
     onRemove(id)
+  }
+
+  handleRemoveAttachment = (i) => {
+    const { onRemoveAttachment, id } = this.props
+    onRemoveAttachment(id, i)
+  }
+
+  handleUploadAttachements = (files) => {
+    const { onUploadAttachments, id } = this.props
+    onUploadAttachments(id, files)
   }
 
   render() {
@@ -25,6 +35,8 @@ export default class EditArea extends React.Component {
     const {
       handleTextChange,
       handleRemove,
+      handleRemoveAttachment,
+      handleUploadAttachements,
     } = this
     return (
       <div className={styles.EditArea}>
@@ -32,6 +44,8 @@ export default class EditArea extends React.Component {
         <div>{`node xy: ${displayedCoords}`}</div><br/>
         <div>Text:</div>
         <textarea
+          ref={input => input && input.focus()}
+          className={styles.Text}
           rows={10}
           value={text}
           onChange={handleTextChange}
@@ -41,14 +55,11 @@ export default class EditArea extends React.Component {
           value='remove'
           onClick={handleRemove}
         />
-        <div>Attachments:</div>
-        <Attachments
+        <AttachmentsSection
           attachments={attachments}
+          onRemoveAttachment={handleRemoveAttachment}
+          onUploadAttachments={handleUploadAttachements}
         />
-        {/* <Dropzone className='dropzone' onDrop={this.handleAddAttachments}>
-          <p>Try dropping some files here, or click to select files to upload.</p>
-        </Dropzone> */}
-        {/* <input type='button' value='Attach' onClick={this.handleUploadAttachments}></input> */}
       </div>
     )
   }
@@ -59,6 +70,8 @@ EditArea.propTypes = {
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
   text: PropTypes.string.isRequired,
   attachments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onEditUpdate: PropTypes.func.isRequired,
+  onTextUpdate: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
+  onRemoveAttachment: PropTypes.func.isRequired,
+  onUploadAttachments: PropTypes.func.isRequired,
 }
