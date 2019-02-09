@@ -8,43 +8,52 @@ import styles from './Node.module.scss'
 const PureReactMarkdown = pure(ReactMarkdown)
 const preventDefault = evt => evt.preventDefault()
 
-export default function Node(props) {
-  const {
-    coords,
-    text,
-    details,
-    tags,
-    attachments,
-    onMouseDown,
-    onMouseUp,
-    onDoubleClick,
-  } = props
-  const [x, y] = coords
-  return (
-    <div
-      className={styles.NodeWrapper}
-      style={{
-        top: y + 'px',
-        left: x + 'px',
-      }}
-    >
+export default class Node extends React.Component {
+  onMouseDown = (event) => {
+    const isLink = event.target.nodeName.toLowerCase() === 'a'
+    if (isLink) return
+    const { onMouseDown } = this.props
+    onMouseDown(event)
+  }
+
+  render() {
+    const {
+      coords,
+      text,
+      details,
+      tags,
+      attachments,
+      onMouseUp,
+      onDoubleClick,
+    } = this.props
+    const { onMouseDown } = this
+    const [x, y] = coords
+    return (
       <div
-        className={styles.Node}
-        title={details}
-        onMouseDown={onMouseDown}
-        onContextMenu={preventDefault}
-        onMouseUp={onMouseUp}
-        onDoubleClick={onDoubleClick}
+        className={styles.NodeWrapper}
+        style={{
+          top: y + 'px',
+          left: x + 'px',
+        }}
       >
-        <PureReactMarkdown
-          className={styles.MarkdownWrapper}
-          source={text}
-        />
-        <NodeTags tags={tags}/>
+        <div
+          className={styles.Node}
+          title={details}
+          onMouseDown={onMouseDown}
+          onContextMenu={preventDefault}
+          onMouseUp={onMouseUp}
+          onDoubleClick={onDoubleClick}
+        >
+          <PureReactMarkdown
+            className={styles.MarkdownWrapper}
+            source={text}
+          />
+          <NodeTags tags={tags}/>
+        </div>
+        {attachments.length > 0 && <PaperclipIcon /> }
       </div>
-      {attachments.length > 0 && <PaperclipIcon /> }
-    </div>
-  )
+    )
+  }
 }
 
 Node.defaultProps = {

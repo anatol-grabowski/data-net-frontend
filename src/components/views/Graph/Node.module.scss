@@ -33,6 +33,14 @@
         margin: 0;
       }
 
+      * {
+        pointer-events: none;
+      }
+
+      a {
+        pointer-events: all;
+      }
+
       ul {
         padding-left: 1.8rem;
       }
