@@ -3,26 +3,7 @@ import './index.css'
 import GraphApi from './api/graph.api'
 import { GraphEditor } from './components/containers'
 
-const helpText = `
-LMB double click on empty space - create node
-LMB on node and drag - move node
-
-RMB on node and drag - create edge (connection) to another node
-LMB double click on node/edge - edit node/edge
-
-mouse wheel - zoom
-LMB on empty space and drag - pan
-
-Ctrl + S - save graph
-
-To open a graph enter its name to the location bar after '/', e.g. 'http://localhost:3000/js' will open a graph named 'js'.
-If the graph with this name doesn't exist then it will be created on save.
-
-Source code:
-https://github.com/grabantot/data-net
-https://github.com/grabantot/data-net-backend
-https://github.com/grabantot/data-net-frontend
-`
+const helpText = ``
 
 export default class App extends React.Component {
   constructor(props) {
@@ -33,31 +14,35 @@ export default class App extends React.Component {
   }
 
   handleKeyDown = event => {
+    const { graphName } = this.props
     let charCode = String.fromCharCode(event.which).toLowerCase()
     if (event.ctrlKey && charCode === 's') {
+      const start = Date.now()
       event.preventDefault()
       console.log('Ctrl + S pressed')
       if (!this.state.graph) return
-      this.setState({backgroundText: helpText + '\n\nSaving'})
-      GraphApi.saveGraph(this.state.graph, this.props.graphName)
-        .then(() => this.setState({backgroundText: helpText + '\n\nSaved\n' + new Date()}))
-        .catch(err => this.setState({backgroundText: helpText + '\n\nError while saving\n' + err}))
+      this.setState({backgroundText: helpText + 'Saving ' + graphName})
+      GraphApi.saveGraph(this.state.graph, graphName)
+        .then(() => this.setState({backgroundText: helpText + 'Saved ' + graphName + '\n' + new Date() + '\n' + (Date.now() - start) + ' ms'}))
+        .catch(err => this.setState({backgroundText: helpText + 'Error while saving\n' + err}))
     }
   }
 
   openGraph() {
-    this.setState({backgroundText: helpText + '\n\nOpening graph'})
-    GraphApi.getGraph(this.props.graphName)
+    const { graphName } = this.props
+    this.setState({backgroundText: helpText + 'Opening graph ' + graphName})
+    const start = Date.now()
+    GraphApi.getGraph(graphName)
       .then(graph => {
         window.g = graph
         this.setState({
           graph,
-          backgroundText: helpText + '\n\nOpened'
+          backgroundText: helpText + 'Opened graph ' + graphName + '\n' + (Date.now() - start) + ' ms'
         })
       })
       .catch(err => {
         this.setState({
-          backgroundText: helpText + '\n\nError while opening\n' + err
+          backgroundText: helpText + 'Error while opening\n' + err
         })
       })
   }
