@@ -58,14 +58,21 @@ export default class App extends React.Component {
   }
 
   render() {
+    const {
+      graph,
+      backgroundText,
+    } = this.state
+    const {
+      handleKeyDown,
+    } = this
     return (
       <div>
         <div className='graph-container'
-          onKeyDown={this.handleKeyDown}
+          onKeyDown={handleKeyDown}
           tabIndex="0"
         >
-          <div className='graph-info-text'>{this.state.backgroundText}</div>
-          {this.state.graph && <GraphEditor graph={this.state.graph}/>}
+          <div className='graph-info-text'>{backgroundText}</div>
+          {graph && <GraphEditor graph={graph}/>}
         </div>
       </div>
     )

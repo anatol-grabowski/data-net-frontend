@@ -11,15 +11,28 @@ const debug = Debug('GraphEditor')
 export default class GraphEditor extends React.Component {
   constructor(props) {
     super(props)
-    const { graph } = this.props
-    this.graphService = new GraphService(graph)
     this.state = {
-      graphForRender: this.graphService.graphForRender,
+      graphForRender: null,
       editedNodeId: null,
     }
   }
 
   componentDidMount() {
+    this.updateGraphService()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.graph === this.props.graph) return
+    this.updateGraphService()
+  }
+
+  updateGraphService() {
+    const { graph } = this.props
+    this.graphService = new GraphService(graph)
+    this.setState({
+      graphForRender: this.graphService.graphForRender,
+      editedNodeId: null,
+    })
     this.graphService.events.on('update', this.handleGraphUpdate)
   }
 
@@ -125,6 +138,7 @@ export default class GraphEditor extends React.Component {
       graphForRender,
       editedNodeId,
     } = this.state
+    if (!graphForRender) return null
     const editedNode = graphForRender.nodes.find(n => n.id === editedNodeId)
 
     const {
