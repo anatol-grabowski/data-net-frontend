@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "basic-authorization-header": "^0.2.7",
     "data-net": "git+https://github.com/grabantot/data-net#eventful",
     "debug": "^4.1.1",
     "node-sass": "^4.11.0",
