@@ -21,7 +21,7 @@
     "basic-authorization-header": "^0.2.7",
     "data-net": "git+https://github.com/grabantot/data-net#eventful",
     "debug": "^4.1.1",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-dropzone": "^5.1.0",
