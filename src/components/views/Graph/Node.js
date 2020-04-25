@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import ReactMarkdown from 'react-markdown'
 import { pure } from 'recompose'
 import { PaperclipIcon } from '../Primitives'
+import ReactMarkdownMathjax from './ReactMarkdownMathjax'
 import styles from './Node.module.scss'
 
-const PureReactMarkdown = pure(ReactMarkdown)
+const PureReactMarkdown = pure(ReactMarkdownMathjax)
 const preventDefault = evt => evt.preventDefault()
 
 export default class Node extends React.Component {
