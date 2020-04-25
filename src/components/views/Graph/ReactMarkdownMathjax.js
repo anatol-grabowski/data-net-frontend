@@ -3,6 +3,8 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import MathJax from 'react-mathjax'
 import RemarkMathPlugin from 'remark-math'
+import styles from './ReactMarkdownMathjax.module.scss'
+console.log(styles)
 
 function ReactMarkdownMathjax(props) {
     const newProps = {
@@ -13,9 +15,15 @@ function ReactMarkdownMathjax(props) {
         renderers: {
           ...props.renderers,
           math: (props) =>
-            <MathJax.Node formula={props.value} />,
+            <MathJax.Node
+              formula={props.value}
+              className={styles.Math}
+            />,
           inlineMath: (props) =>
-            <MathJax.Node inline formula={props.value} />,
+            <MathJax.Node
+              inline
+              formula={props.value}
+            />,
         }
       }
       return (
