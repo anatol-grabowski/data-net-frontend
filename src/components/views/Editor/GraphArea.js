@@ -151,7 +151,7 @@ export default class GraphArea extends React.Component {
     if (event.button === mouseButton.MAIN) {
       const { transformFunctions } = this.state
       const pos = transformFunctions.mapScreenToWorld([event.clientX, event.clientY])
-      this.dragNodeBegin(node, pos)
+      this.dragNodeBegin(node, pos) // TODO: fix drag begin before double click
     }
     if (event.button === mouseButton.AUXILIARY) {
       this.removeNode(node)

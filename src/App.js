@@ -47,8 +47,11 @@ export default class App extends React.Component {
       const graph = await GraphApi.getGraph(graphName)
       window.g = graph
       try {
-        await this.wsApi.connect(this.rerender)
-        this.wsApi.init(graphName, graph)
+        const doUseWs = document.location.search === '?ws'
+        if (doUseWs) {
+          await this.wsApi.connect(this.rerender)
+          this.wsApi.init(graphName, graph)
+        }
       } catch (err) {
         console.log('ws error', err)
       }
