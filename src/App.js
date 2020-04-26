@@ -13,14 +13,15 @@ export default class App extends React.Component {
       backgroundText: helpText
     }
     this.wsApi = new WsApi()
+    window.app = this
   }
 
   rerender = (newState) => {
     console.log('rerender', newState, this.state.graph)
-    this.setState({
-      graph: newState.graph,
-      wsStatusText: `ws status: ${newState.wsState}, users: ${newState.numSubscriptions}`,
-    })
+    // this.setState({
+    //   // graph: newState.graph,
+    //   wsStatusText: `ws status: ${newState.wsState}, users: ${newState.numSubscriptions}`,
+    // })
   }
 
   handleKeyDown = event => {
@@ -45,8 +46,12 @@ export default class App extends React.Component {
     try {
       const graph = await GraphApi.getGraph(graphName)
       window.g = graph
-      await this.wsApi.connect(this.rerender)
-      this.wsApi.init(graphName, graph)
+      try {
+        await this.wsApi.connect(this.rerender)
+        this.wsApi.init(graphName, graph)
+      } catch (err) {
+        console.log('ws error', err)
+      }
       this.setState({
         graph,
         backgroundText: helpText + 'Opened graph ' + graphName + '\n' + (Date.now() - start) + ' ms'

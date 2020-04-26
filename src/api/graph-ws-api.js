@@ -19,11 +19,6 @@ export class WsApi {
       this.update()
     })
 
-    ws.addEventListener('error', () => {
-      this.wsState = 'error'
-      this.update()
-    })
-
     ws.addEventListener('message', (event) => {
       console.log('ws message', event.data)
       const message = JSON.parse(event.data)
@@ -44,10 +39,16 @@ export class WsApi {
       }
     })
 
-    await new Promise(resolve => {
+    await new Promise((resolve, reject) => {
       ws.addEventListener('open', () => {
         this.wsState = 'connected'
         resolve()
+      })
+
+      ws.addEventListener('error', (event) => {
+        this.wsState = 'error'
+        reject(event)
+        this.update()
       })
     })
     console.log('ws open')
