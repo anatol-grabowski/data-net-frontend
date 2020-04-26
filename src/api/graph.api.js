@@ -15,7 +15,7 @@ export default class GraphApi {
     const url = `${apiUrl}/graph/${encodeURIComponent(graphName)}`
     const response = await fetch(url)
     const json = await response.json()
-    const graph = Graph.create(json.graph)
+    const graph = json.graph
     console.log('opened', graph.nodes.length)
     return graph
   }
@@ -64,19 +64,19 @@ function makeDummyGraph() {
 }
 
 function genGraph(num) {
-  const graph = Graph.create()
-  const n0 = graph.node({
+  const graph = { nodes: [], edges: [] }
+  const n0 = Graph.createNode(graph, {
     x: -100, y: -100, width: 100, height: 100, text: '0000'
   })
   for (let i = 0; i < num; i++) {
-    const n = graph.node({
+    const n = Graph.createNode(graph, {
       x: Math.random() * 1000,
       y: Math.random() * 1000,
       width: 160,
       height: 70,
       text: 'test',
     })
-    graph.edge(n0, n)
+    Graph.createEdge(graph, n0.id, n.id)
   }
   return graph
 }

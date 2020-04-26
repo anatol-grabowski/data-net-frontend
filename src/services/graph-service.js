@@ -1,4 +1,5 @@
 import EventEmitter from 'events'
+import { Graph } from 'data-net'
 import { uploadFile } from '../api/upload.api'
 
 function getNodeForRender(node) {
@@ -19,9 +20,11 @@ function getNodeForRender(node) {
   return nodeForRender
 }
 
-function getEdgeForRender(edge) {
-  const from = [edge.from.data.x, edge.from.data.y]
-  const to = [edge.to.data.x, edge.to.data.y]
+function getEdgeForRender(graph, edge) {
+  const fromNode = findNodeById(graph, edge.from)
+  const toNode = findNodeById(graph, edge.to)
+  const from = [fromNode.data.x, fromNode.data.y]
+  const to = [toNode.data.x, toNode.data.y]
   const edgeForRender = {
     id: edge.id,
     points: [from, to],
@@ -31,8 +34,10 @@ function getEdgeForRender(edge) {
 
 function getGraphForRender(graph) {
   if (!graph) return { nodes: [], edges: [] }
+  // const nodesMap = new Map()
+  // graph.nodes.forEach(n => nodesMap.set(n.id, n))
   const nodes = graph.nodes.map(n => getNodeForRender(n))
-  const edges = graph.edges.map(e => getEdgeForRender(e))
+  const edges = graph.edges.map(e => getEdgeForRender(graph, e))
   return { nodes, edges }
 }
 
@@ -62,27 +67,23 @@ class GraphService {
       y: pos[1],
       text: 'aaa',
     }
-    const { id } = this.graph.node(data)
+    const { id } = Graph.createNode(this.graph, data)
     this.updateGraphForRender()
     return id
   }
 
   addEdge(fromId, toId) {
-    const from = findNodeById(this.graph, fromId)
-    const to = findNodeById(this.graph, toId)
-    this.graph.edge(from, to)
+    Graph.createEdge(this.graph, fromId, toId)
     this.updateGraphForRender()
   }
 
   removeNode(nodeId) {
-    const node = findNodeById(this.graph, nodeId)
-    node.remove()
+    Graph.deleteNode(this.graph, nodeId)
     this.updateGraphForRender()
   }
 
   removeEdge(edgeId) {
-    const edge = findEdgeById(this.graph, edgeId)
-    edge.remove()
+    Graph.deleteEdge(this.graph, edgeId)
     this.updateGraphForRender()
   }
 
