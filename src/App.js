@@ -18,10 +18,10 @@ export default class App extends React.Component {
 
   rerender = (newState) => {
     console.log('rerender', newState, this.state.graph)
-    // this.setState({
-    //   // graph: newState.graph,
-    //   wsStatusText: `ws status: ${newState.wsState}, users: ${newState.numSubscriptions}`,
-    // })
+    this.setState({
+      graph: newState.graph,
+      wsStatusText: `ws status: ${newState.wsState}, users: ${newState.numSubscriptions}`,
+    })
   }
 
   handleKeyDown = event => {
