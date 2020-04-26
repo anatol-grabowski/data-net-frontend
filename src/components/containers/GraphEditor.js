@@ -38,6 +38,7 @@ export default class GraphEditor extends React.Component {
 
   handleGraphUpdate = () => {
     debug('graph update')
+    this.props.onUpdate()
     this.setState({ graphForRender: this.graphService.graphForRender })
   }
 
