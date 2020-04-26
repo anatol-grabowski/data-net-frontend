@@ -12,7 +12,6 @@ export default class App extends React.Component {
     this.state = {
       backgroundText: helpText
     }
-    this.wsApi = new WsApi()
     window.app = this
   }
 
@@ -49,6 +48,7 @@ export default class App extends React.Component {
       try {
         const doUseWs = document.location.search === '?ws'
         if (doUseWs) {
+          this.wsApi = new WsApi()
           await this.wsApi.connect(this.rerender)
           this.wsApi.init(graphName, graph)
         }
@@ -77,7 +77,7 @@ export default class App extends React.Component {
   }
 
   handleUpdate = () => {
-    this.wsApi.sendUpdate(this.state.graph)
+    this.wsApi && this.wsApi.sendUpdate(this.state.graph)
   }
 
   render() {
