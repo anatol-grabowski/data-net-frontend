@@ -45,6 +45,7 @@ export default class GraphEditor extends React.Component {
     const { graphForRender } = this.graphService
     const from = graphForRender.nodes.find(n => n.id === fromId).coords
     const newEdge = {
+      id: 'x',
       points: [from, pos],
     }
     const newGraphForRender = {
