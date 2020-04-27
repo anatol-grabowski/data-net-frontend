@@ -28,6 +28,8 @@ function getEdgeForRender(graph, edge) {
   const edgeForRender = {
     id: edge.id,
     points: [from, to],
+    from: edge.from,
+    to: edge.to,
   }
   return edgeForRender
 }

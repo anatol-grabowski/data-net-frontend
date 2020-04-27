@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { pure } from 'recompose'
+import Measure from 'react-measure'
 import { PaperclipIcon } from '../Primitives'
 import ReactMarkdownMathjax from './ReactMarkdownMathjax'
 import styles from './Node.module.scss'
@@ -25,33 +26,41 @@ export default class Node extends React.Component {
       attachments,
       onMouseUp,
       onDoubleClick,
+      onResize,
     } = this.props
     const { onMouseDown } = this
     const [x, y] = coords
     return (
-      <div
-        className={styles.NodeWrapper}
-        style={{
-          top: y + 'px',
-          left: x + 'px',
-        }}
+      <Measure
+        onResize={onResize}
       >
-        <div
-          className={styles.Node}
-          title={details}
-          onMouseDown={onMouseDown}
-          onContextMenu={preventDefault}
-          onMouseUp={onMouseUp}
-          onDoubleClick={onDoubleClick}
-        >
-          <PureReactMarkdown
-            className={styles.MarkdownWrapper}
-            source={text}
-          />
-          <NodeTags tags={tags}/>
-        </div>
-        {attachments.length > 0 && <PaperclipIcon /> }
-      </div>
+        {({ measureRef }) => (
+          <div
+            ref={measureRef}
+            className={styles.NodeWrapper}
+            style={{
+              top: y + 'px',
+              left: x + 'px',
+            }}
+          >
+            <div
+              className={styles.Node}
+              title={details}
+              onMouseDown={onMouseDown}
+              onContextMenu={preventDefault}
+              onMouseUp={onMouseUp}
+              onDoubleClick={onDoubleClick}
+            >
+              <PureReactMarkdown
+                className={styles.MarkdownWrapper}
+                source={text}
+              />
+              <NodeTags tags={tags}/>
+            </div>
+            {attachments.length > 0 && <PaperclipIcon /> }
+          </div>
+        )}
+      </Measure>
     )
   }
 }

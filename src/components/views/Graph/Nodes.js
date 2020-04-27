@@ -9,7 +9,8 @@ function Nodes(props) {
     nodes,
     onNodeMouseDown,
     onNodeMouseUp,
-    onNodeDoubleClick
+    onNodeDoubleClick,
+    onResize,
   } = props
   return (
     <div className={styles.Nodes}>
@@ -18,6 +19,7 @@ function Nodes(props) {
           <Node
             key={node.id}
             {...node}
+            onResize={onResize(node)}
             onMouseDown={onNodeMouseDown(node)}
             onMouseUp={onNodeMouseUp(node)}
             onDoubleClick={onNodeDoubleClick(node)}
@@ -45,6 +47,7 @@ const NodesWithGroupedHandlers = withGroupedEvents([
   'onNodeMouseDown',
   'onNodeMouseUp',
   'onNodeDoubleClick',
+  'onResize',
 ])(Nodes)
 
 export default NodesWithGroupedHandlers
