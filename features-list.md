@@ -14,16 +14,19 @@
 - node hints
 - attachments upload, download, delete (dropbox)
 - nice paper clip
+- TEX
+- collaborative editing (with websockets)
+- arrows to edges of nodes (not centers)
 
 # To do
+- logins, private graphs
+- graphs list
 - pure data-net object
-- collaborative editing
-- private graphs
 - select and move/copy multiple nodes
-- arrows to edges of nodes (not centers)
 - tags search
 - nodes collapse, focus
 - node clusters
+- autoarrange nodes
 
 # Bugs
 - links should be rmb-clickable
@@ -36,3 +39,5 @@
 - hacky code in with-pan-and-zoom hoc
 - think of some way of node inheritance?
 - eslint and eslint-plugin-react should be dev dependencies
+- optimize arrows
+- optimize collaboration
