@@ -61,11 +61,18 @@ export class WsApi {
     this._upd({
       numSubscriptions: this.numSubscriptions,
       wsState: this.wsState,
-      graph: graph ? clone(graph) : this.graph,
+      graph: clone(this.graph),
     })
   }
 
   init(graphId, graph) {
+    // if (this.graphId !== undefined) {
+    //   this._upd = null
+    //   const message = {
+    //     action: 'unsubscribe',
+    //   }
+    //   this.ws.send(JSON.stringify(message))
+    // }
     this.graphId = graphId
     const message = {
       action: 'subscribe',
@@ -76,8 +83,8 @@ export class WsApi {
   }
 
   sendUpdate(graph) {
-    console.log(this.graph, graph)
     const delta = diffpatcher.diff(this.graph, graph)
+    console.log(this.graph === graph, this.graph, graph, delta)
     const message = {
       action: 'update',
       graphId: this.graphId,
@@ -85,8 +92,10 @@ export class WsApi {
       sessionId: this.sessionId,
     }
     const msgStr = JSON.stringify(message, null, 2)
-    console.log('ws send', msgStr)
-    this.ws.send(msgStr)
+    // if (delta) {
+      console.log('ws send', msgStr)
+      this.ws.send(msgStr)
+    // }
     this.graph = clone(graph)
   }
 }

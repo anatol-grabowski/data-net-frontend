@@ -31,16 +31,6 @@ function getEdgeForRender(graph, edge) {
   }
   return edgeForRender
 }
-
-function getGraphForRender(graph) {
-  if (!graph) return { nodes: [], edges: [] }
-  // const nodesMap = new Map()
-  // graph.nodes.forEach(n => nodesMap.set(n.id, n))
-  const nodes = graph.nodes.map(n => getNodeForRender(n))
-  const edges = graph.edges.map(e => getEdgeForRender(graph, e))
-  return { nodes, edges }
-}
-
 function findNodeById(graph, id) {
   return graph.nodes.find(n => n.id === id)
 }
@@ -52,12 +42,21 @@ function findEdgeById(graph, id) {
 class GraphService {
   constructor(graph) {
     this.graph = graph
-    this.graphForRender = getGraphForRender(graph)
+    this.graphForRender = this.getGraphForRender(graph)
     this.events = new EventEmitter()
   }
 
+  getGraphForRender(graph) {
+    if (!graph) return { nodes: [], edges: [] }
+    // const nodesMap = new Map()
+    // graph.nodes.forEach(n => nodesMap.set(n.id, n))
+    const nodes = graph.nodes.map(n => getNodeForRender(n))
+    const edges = graph.edges.map(e => getEdgeForRender(graph, e))
+    return { nodes, edges }
+  }
+
   updateGraphForRender() {
-    this.graphForRender = getGraphForRender(this.graph)
+    this.graphForRender = this.getGraphForRender(this.graph)
     this.events.emit('update')
   }
 

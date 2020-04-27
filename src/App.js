@@ -16,7 +16,7 @@ export default class App extends React.Component {
   }
 
   rerender = (newState) => {
-    console.log('rerender', newState, this.state.graph)
+    // console.log('rerender', newState, this.state.graph)
     this.setState({
       graph: newState.graph,
       wsStatusText: `ws status: ${newState.wsState}, users: ${newState.numSubscriptions}`,
@@ -46,7 +46,7 @@ export default class App extends React.Component {
       const graph = await GraphApi.getGraph(graphName)
       window.g = graph
       try {
-        const doUseWs = document.location.search === '?ws'
+        const doUseWs = document.location.search !== '?nows'
         if (doUseWs) {
           this.wsApi = new WsApi()
           await this.wsApi.connect(this.rerender)
