@@ -4,12 +4,12 @@ const { intersect, shape } = svgIntersections
 export function cutEdge(points, fromSize, toSize) {
   let [p1, p2] = points
   const [[x1, y1], [x2, y2]] = points
-
-  const border = 2
   const r = 10
+
+  const borderFrom = 2
   let [fw, fh] = fromSize
-  fw -= border
-  fh -= border
+  fw -= borderFrom
+  fh -= borderFrom
   const intsFrom = intersect(
     shape('line', { x1, y1, x2, y2 }),
     shape('rect', { x: x1 - fw/2, y: y1 - fh/2, width: fw, height: fh, rx: r, ry: r }),
@@ -18,9 +18,10 @@ export function cutEdge(points, fromSize, toSize) {
     p1 = [intsFrom.points[0].x, intsFrom.points[0].y]
   }
 
+  const borderTo = -3
   let [tw, th] = toSize
-  tw -= border
-  th -= border
+  tw -= borderTo
+  th -= borderTo
   const intsTo = intersect(
     shape('line', { x1, y1, x2, y2 }),
     shape('rect', { x: x2 - tw/2, y: y2 - th/2, width: tw, height: th, rx: r, ry: r }),
