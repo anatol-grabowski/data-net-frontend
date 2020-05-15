@@ -34,6 +34,7 @@
     "react-scripts": "2.1.3",
     "recompose": "^0.30.0",
     "remark-math": "^2.0.1",
+    "rxjs": "^6.5.5",
     "svg-intersections": "^0.4.0"
   },
   "devDependencies": {

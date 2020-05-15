@@ -5,7 +5,7 @@
 - create nodes (component), uses mapScreenToWorld to get node's x and y
 - create edges (component), draws in screen space
 - edit nodes (component), uses mapWorldToScreen to get input's left and right
-- save graph
+- save graph (mongodb)
 - delete edges and nodes
 - node details
 - edge arrows
@@ -14,15 +14,19 @@
 - node hints
 - attachments upload, download, delete (dropbox)
 - nice paper clip
-- TEX
+- TEX math
 - collaborative editing (with websockets)
 - arrows to edges of nodes (not centers)
 
 # To do
 - logins, private graphs
 - graphs list
+- stars for graphs
+- fork graphs
+- search users, graphs
 - pure data-net object
 - select and move/copy multiple nodes
+- flexible edges
 - tags search
 - nodes collapse, focus
 - node clusters
@@ -32,6 +36,7 @@
 - links should be rmb-clickable
 - tags end space
 - images shouldn't be draggable
+- paper clip blinking
 
 # Refactor
 - ugly code at graph-render-and-edit-area
